@@ -1,0 +1,93 @@
+.App-header {
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+.App-title {
+    font-size: 3.0em;
+    color: #33cccc;
+    font-family: Arial;
+}
+
+.App-intro {
+    font-size: large;
+    font-style: normal;
+    font-family: Courier;
+}
+
+.Navbar {
+    border-radius: 0px;
+    font-family: Courier;
+    font-size: large;
+    font-weight: bold;
+}
+
+.Mainbutton {
+    text-align: center;
+    padding: 20px;
+}
+
+.CreateTest {
+    padding: 30px;
+}
+
+.container {
+    display: flex;
+    max-width: 70%;
+}
+
+#input-field {
+    flex: 1;
+}
+
+#dropdown {
+    flex: 8;
+}
+
+.form {
+    position: relative;
+}
+
+.Dropdowns {
+    padding: 25px;
+    text-align: center;
+}
+
+.divider {
+    width: 10px;
+    height: auto;
+    display: inline-block;
+}
+
+.modal-container {
+    position: relative;
+}
+
+.panel {
+    max-width: 75%;
+    min-height: 300px;
+    font-style: italic;
+    margin: 20px;
+}
+
+.code {
+    font-family: Courier;
+    font-weight: bold;
+    color: #292727;
+    font-size: 1.13em;
+}
+
+.blueTag {
+    color: #0e36a5;
+}
+
+.orangeTag {
+    color: #cc5c28;
+}
+
+ul {
+    list-style-type: none
+}
