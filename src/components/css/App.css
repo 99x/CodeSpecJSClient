@@ -30,6 +30,10 @@
     padding: 20px;
 }
 
+.allButtons {
+    padding: 1px 1px;
+}
+
 .CreateTest {
     padding: 30px;
 }
