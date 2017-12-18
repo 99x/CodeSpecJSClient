@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import './css/App.css';
-// import CodeList from '../containers/codeList'
+import '../../assets/css/App.css';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
-import Body from './body';
+import Body from '../containers/body';
 
 class Header extends Component {
     constructor(props) {

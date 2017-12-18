@@ -5,27 +5,10 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 
 import DisplayCode from './displayCode'
-import './css/App.css';
-
-
-var options = [
-    { value: 'one', label: 'One' },
-    { value: 'two', label: 'Two', clearableValue: false }
-];
+import { addFeature, addScenario, addStep } from '../actions/createActions';
+import '../../assets/css/App.css';
 
 class Body extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            step1: 'given'
-        };
-    }
-    change = (event) => {
-        console.log("Heyyya")
-        var index = event.nativeEvent.target.selectedIndex;
-        console.log(event.nativeEvent.target[index].text)
-    }
-
     render() {
         var content = "";
         if (this.props.showView) {
@@ -117,46 +100,29 @@ class Body extends Component {
                 </div>
             );
         }
-
         return content;
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        create: state.reducerCreate,
-        reducerActiveScenario: state.reducerActiveScenario
+        create: state.reducerCreate
     }
-    //this.props.create.feature
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         addFeature: (featureDescription) => {
-            dispatch({
-                type: "ADD_FEATURE",
-                payload: featureDescription
-            });
+            dispatch(addFeature(featureDescription));
         },
         addScenario: (scenarioDescription) => {
-            dispatch({
-                type: "ADD_SCENARIO",
-                payload: scenarioDescription
-            })
+            dispatch(addScenario(scenarioDescription));
         },
         addStep: (steps) => {
             let type = document.getElementById('input-field').options[document.getElementById('input-field').selectedIndex].text;
             let detail = document.getElementById('dropdown').options[document.getElementById('dropdown').selectedIndex].text;
-            console.log(type + detail);
             // console.log(activeId);
-            dispatch({
-                type: "ADD_STEP",
-                payload: {
-                    scenarioId: "1",
-                    stepOne: type,
-                    stepTwo: detail
-                }
-            })
+            dispatch(addStep(type, detail));
         }
     };
 };
