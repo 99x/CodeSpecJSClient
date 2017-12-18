@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import allReducers from './reducers/index';
-import Header from './components/header';
+import allReducers from './app/reducers/index';
+import Header from './app/components/header';
 import './index.css';
 
 import { createStore, applyMiddleware } from 'redux';
