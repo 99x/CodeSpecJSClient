@@ -2,29 +2,27 @@ import React from 'react';
 import { Panel, Button, Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { removeScenario } from '../actions/createActions';
+import { removeScenario, removeStep, scenarioDown, scenarioUp } from '../actions/createActions';
 import '../../assets/css/App.css';
 
 class DisplayCode extends React.Component {
 
 
     render() {
-        var handle = (event) => {
+        var disableScenarioDown = (event) => {
             console.log('in remove scenario');
-            console.log(event)
+
         }
         //onClick={handle.bind(this, item.scenarioId)}
 
-        //var scenarios = this.props.create.scenarios.map(function (item) {
-        // const scenarios = (props) => {
         const scenarios = this.props.create.scenarios.map((item) => {
             return (
                 <li key={item.scenarioId}>
                     <p>
                         <Button className='allButtons'><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
                         <Button className='allButtons' onClick={this.props.removeScenario.bind(this, item.scenarioId)}><img src={require('../../assets/images/delete-icon.png')} alt="delete" width="20" height="20" /></Button>
-                        <Button className='allButtons'><img src={require('../../assets/images/up-arrow.png')} alt="up" width="20" height="20" /></Button>
-                        <Button className='allButtons'><img src={require('../../assets/images/down-arrow.svg')} alt="down" width="20" height="20" /></Button>
+                        <Button className='allButtons' onClick={this.props.scenarioUp.bind(this, item.scenarioId)}><img src={require('../../assets/images/up-arrow.png')} alt="up" width="20" height="20" /></Button>
+                        <Button className='allButtons' onClick={this.props.scenarioDown.bind(this, item.scenarioId)}><img src={require('../../assets/images/down-arrow.svg')} alt="down" width="20" height="20" /></Button>
                         <span className="blueTag"> &nbsp;&emsp;Scenario: </span>{item.description}
                     </p>
                     <ul>
@@ -81,15 +79,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(removeScenario(removeScenarioId));
         },
         removeStep: (removeStepId, scenarioId) => {
-            console.log('HEYYYYYYY');
-            console.log(removeStepId + "  " + scenarioId);
-            dispatch({
-                type: "REMOVE_STEP",
-                payload: {
-                    removeStepId: removeStepId,
-                    scenarioId: scenarioId
-                }
-            });
+            dispatch(removeStep(removeStepId, scenarioId));
+        },
+        scenarioDown: (scenarioId) => {
+            dispatch(scenarioDown(scenarioId));
+        },
+        scenarioUp: (scenarioId) => {
+            dispatch(scenarioUp(scenarioId));
         }
     };
 };

@@ -29,3 +29,27 @@ export function removeScenario(removeScenarioId) {
         payload: removeScenarioId
     };
 }
+
+export function removeStep(removeStepId, scenarioId) {
+    return {
+        type: "REMOVE_STEP",
+        payload: {
+            removeStepId: removeStepId,
+            scenarioId: scenarioId
+        }
+    };
+}
+
+export function scenarioDown(scenarioId) {
+    return {
+        type: "SCENARIO_DOWN",
+        payload: scenarioId
+    };
+}
+
+export function scenarioUp(scenarioId) {
+    return {
+        type: "SCENARIO_UP",
+        payload: scenarioId
+    };
+}
