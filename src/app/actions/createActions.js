@@ -53,3 +53,23 @@ export function scenarioUp(scenarioId) {
         payload: scenarioId
     };
 }
+
+export function stepDown(scenarioId, stepId) {
+    return {
+        type: "STEP_DOWN",
+        payload: {
+            scenarioId: scenarioId,
+            stepId: stepId
+        }
+    };
+}
+
+export function stepUp(scenarioId, stepId) {
+    return {
+        type: "STEP_UP",
+        payload: {
+            scenarioId: scenarioId,
+            stepId: stepId
+        }
+    };
+}

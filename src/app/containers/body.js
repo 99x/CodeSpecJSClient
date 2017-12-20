@@ -59,33 +59,33 @@ class Body extends Component {
 
                             <FormControl componentClass="select" id="dropdown">
                                 <option value="navigate">Navigate to &lt;URL&gt; </option>
-                                <option value="enter"> I enter &lt;Input Value&gt; to the &lt;Element Key&gt; </option>
-                                <option value="click"> Click on &lt;Element Key&gt; </option>
-                                <option value="click"> The content of &lt;Element Key&gt; has text &lt;Expected Text&gt; </option>
-                                <option value="click"> Element &lt;Element Key&gt; contains text &lt;Expected Text&gt; </option>
-                                <option value="click"> Wait for &lt;Element Key&gt; to appear </option>
-                                <option value="click"> Wait for &lt;Element Key&gt; to contain text &lt;Expected Text&gt; </option>
+                                <option value="enter"> I enter &lt;InputValue&gt; to the &lt;ElementKey&gt; </option>
+                                <option value="click"> Click on &lt;ElementKey&gt; </option>
+                                <option value="contentOf"> The content of &lt;ElementKey&gt; has text &lt;ExpectedText&gt; </option>
+                                <option value="click"> Element &lt;ElementKey&gt; contains text &lt;ExpectedText&gt; </option>
+                                <option value="click"> Wait for &lt;ElementKey&gt; to appear </option>
+                                <option value="click"> Wait for &lt;ElementKey&gt; to contain text &lt;ExpectedText&gt; </option>
                                 <option value="click"> Wait for &lt;Seconds&gt; seconds </option>
                                 <option value="click"> Switch to main frame </option>
-                                <option value="click"> Switch to iframe &lt;Element key&gt; </option>
-                                <option value="click"> Switch to popup window &lt;Window or Tab Index&gt; </option>
-                                <option value="click"> Select value &lt;Value&gt; from &lt;Element Key&gt; </option>
+                                <option value="click"> Switch to iframe &lt;ElementKey&gt; </option>
+                                <option value="click"> Switch to popup window &lt;Window/TabIndex&gt; </option>
+                                <option value="click"> Select value &lt;Value&gt; from &lt;ElementKey&gt; </option>
                                 <option value="click"> Accept the confirmation alert </option>
-                                <option value="click"> The alert message says &lt;Expected Text&gt; </option>
+                                <option value="click"> The alert message says &lt;ExpectedText&gt; </option>
                                 <option value="click"> I Dismiss the confirm dialog </option>
                                 <option value="click"> I Accept the confirm dialog </option>
-                                <option value="click"> I enter &lt;Input Text&gt; into prompt </option>
-                                <option value="click"> I drag &lt;Dragable Element Key&gt; and drop on to &lt;Droppable Element Key&gt; </option>
-                                <option value="click"> I read the content of element &lt;Element Key&gt; and store in variable &lt;Variable Key&gt; as a &lt;Variable Type&gt; </option>
-                                <option value="click"> I store the value &lt;Value&gt; in variable &lt;Variable Key&gt; as a &lt;Variable Type&gt; </option>
-                                <option value="click"> The value in variable &lt;Variable key&gt; of type &lt;Variable Type&gt; equals to &lt;Value&gt; </option>
-                                <option value="click"> I Add variable &lt;Variable1 key&gt; to &lt;Variable2 key&gt; and store in &lt;Variable3 key&gt; </option>
-                                <option value="click"> I Subtract variable &lt;Variable1 key&gt; from &lt;Variable2 key&gt; and store in &lt;Variable3 key&gt; </option>
-                                <option value="click"> I Multiply variable &lt;Variable1 key&gt; from &lt;Variable2 key&gt; and store in &lt;Variable3 key&gt; </option>
-                                <option value="click"> I Divide variable &lt;Variable1 key&gt; from &lt;Variable2 key&gt; and store in &lt;Variable3 key&gt; </option>
-                                <option value="click"> I populate &lt;Element Key&gt; with the value of variable &lt;Variable Key&gt; of type &lt;Variable Type&gt; </option>
-                                <option value="click"> I Upload &lt;File Path&gt; to &lt;Element Key&gt; </option>
-                                <option value="click"> Click on &lt;Element Key&gt; when active </option>
+                                <option value="click"> I enter &lt;InputText&gt; into prompt </option>
+                                <option value="click"> I drag &lt;DragableElementKey&gt; and drop on to &lt;DroppableElementKey&gt; </option>
+                                <option value="click"> I read the content of element &lt;ElementKey&gt; and store in variable &lt;VariableKey&gt; as a &lt;VariableType&gt; </option>
+                                <option value="click"> I store the value &lt;Value&gt; in variable &lt;VariableKey&gt; as a &lt;VariableType&gt; </option>
+                                <option value="click"> The value in variable &lt;Variablekey&gt; of type &lt;VariableType&gt; equals to &lt;Value&gt; </option>
+                                <option value="click"> I Add variable &lt;Variablekey&gt; to &lt;Variablekey&gt; and store in &lt;Variablekey&gt; </option>
+                                <option value="click"> I Subtract variable &lt;Variablekey1&gt; from &lt;Variablekey2&gt; and store in &lt;Variablekey3&gt; </option>
+                                <option value="click"> I Multiply variable &lt;Variablekey1&gt; from &lt;Variablekey2&gt; and store in &lt;Variablekey3&gt; </option>
+                                <option value="click"> I Divide variable &lt;Variablekey1&gt; from &lt;Variablekey2&gt; and store in &lt;Variablekey3&gt; </option>
+                                <option value="click"> I populate &lt;ElementKey&gt; with the value of variable &lt;VariableKey&gt; of type &lt;VariableType&gt; </option>
+                                <option value="click"> I Upload &lt;FilePath&gt; to &lt;ElementKey&gt; </option>
+                                <option value="click"> Click on &lt;ElementKey&gt; when active </option>
                             </FormControl>
 
                             <div className="divider" />

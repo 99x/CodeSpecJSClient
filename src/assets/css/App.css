@@ -71,7 +71,7 @@
 }
 
 .panel {
-    max-width: 75%;
+    max-width: 80%;
     min-height: 300px;
     font-style: italic;
     margin: 20px;
@@ -85,14 +85,31 @@
 }
 
 .blueTag {
-    color: #0e36a5;
+    color: #1d2beb;
 }
 
 .orangeTag {
-    color: #cc5c28;
+    color: #f55207;
 }
 
 ul {
     list-style-type: none;
     padding-left: 0;
+}
+
+.printStep {
+    display: inline;
+    flex-direction: 'row';
+    color: rgb(0, 0, 0);
+}
+
+.stepInputField {
+    max-width: 15%;
+    display: inline;
+    border: none;
+    border-bottom: 1px solid rgb(146, 147, 150);
+    text-align: center;
+    margin: 3px;
+    padding: 2px;
+    color: rgb(125, 125, 133);
 }

@@ -148,12 +148,6 @@ const reducerCreate = (state = initialState, action) => {
                 let scenario = state.scenarios[scenarioIndex]
                 let scenarioAbove = state.scenarios[scenarioIndex - 1]
 
-                console.log("SC UP")
-                console.log(...state.scenarios.slice(0, (scenarioIndex - 1)))
-                console.log(scenario)
-                console.log(scenarioAbove)
-                console.log(...state.scenarios.slice(scenarioIndex + 1))
-
                 state = {
                     ...state,
                     scenarios: [...state.scenarios.slice(0, (scenarioIndex - 1)),
@@ -163,6 +157,58 @@ const reducerCreate = (state = initialState, action) => {
                 }
             }
 
+            break;
+        }
+        case "STEP_DOWN": {
+            let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload.scenarioId)
+            let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId == action.payload.stepId)
+
+            if (stepIndex != (state.scenarios[scenarioIndex].steps.length - 1)) {
+                let step = state.scenarios[scenarioIndex].steps[stepIndex]
+                let stepBelow = state.scenarios[scenarioIndex].steps[stepIndex + 1]
+
+                let newScenario = {
+                    scenarioId: state.scenarios[scenarioIndex].scenarioId,
+                    description: state.scenarios[scenarioIndex].description,
+                    steps: [...state.scenarios[scenarioIndex].steps.slice(0, stepIndex),
+                        stepBelow,
+                        step,
+                    ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 2)]
+                }
+
+                state = {
+                    ...state,
+                    scenarios: [...state.scenarios.slice(0, (scenarioIndex - 1)),
+                        newScenario,
+                    ...state.scenarios.slice(scenarioIndex + 1)]
+                }
+            }
+            break;
+        }
+        case "STEP_UP": {
+            let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload.scenarioId)
+            let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId == action.payload.stepId)
+
+            if ((stepIndex - 1) != -1) {
+                let step = state.scenarios[scenarioIndex].steps[stepIndex]
+                let stepAbove = state.scenarios[scenarioIndex].steps[stepIndex - 1]
+
+                let newScenario = {
+                    scenarioId: state.scenarios[scenarioIndex].scenarioId,
+                    description: state.scenarios[scenarioIndex].description,
+                    steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex - 1)),
+                        step,
+                        stepAbove,
+                    ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
+                }
+
+                state = {
+                    ...state,
+                    scenarios: [...state.scenarios.slice(0, scenarioIndex),
+                        newScenario,
+                    ...state.scenarios.slice(scenarioIndex + 1)]
+                }
+            }
             break;
         }
     }
