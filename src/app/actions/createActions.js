@@ -73,3 +73,35 @@ export function stepUp(scenarioId, stepId) {
         }
     };
 }
+
+export function save(scenarioIndex, stepIndex, placeholder, eventVal) {
+    return {
+        type: "SAVE",
+        payload: {
+            scenarioIndex: scenarioIndex,
+            stepIndex: stepIndex,
+            key: placeholder,
+            inputVal: eventVal
+        }
+    };
+}
+
+export function disableInput(scenarioId, stepId) {
+    return {
+        type: "DISABLE_INPUT",
+        payload: {
+            scenarioId: scenarioId,
+            stepId: stepId
+        }
+    };
+}
+
+export function enableInput(scenarioId, stepId) {
+    return {
+        type: "ENABLE_INPUT",
+        payload: {
+            scenarioId: scenarioId,
+            stepId: stepId
+        }
+    };
+}

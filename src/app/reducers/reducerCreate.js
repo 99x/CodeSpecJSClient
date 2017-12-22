@@ -38,7 +38,6 @@ const reducerCreate = (state = initialState, action) => {
                 //SEND ERROR MESSAGE : NEED TO ADD FEATURE FIRST
                 break;
             } else {
-                console.log(state.scenarios.length);
                 let scenarioId = uid.randomUUID(6);
                 let newScenario = {
                     scenarioId: scenarioId,
@@ -53,18 +52,28 @@ const reducerCreate = (state = initialState, action) => {
             }
             break;
         }
-        case "ADD_STEP": {
 
+        case "ADD_STEP": {
             let arrayIndex = state.scenarios.length
 
             if (arrayIndex == 0) {
                 console.log("ERROR MESSAGE : NEED TO ADD Scenario FIRST")
                 //SEND ERROR MESSAGE : NEED TO ADD Scenario FIRST
             } else {
-                let newStep = {
+                var newStep = {
                     stepId: uid.randomUUID(6),
                     stepOne: action.payload.stepOne,
-                    stepTwo: action.payload.stepTwo
+                    stepTwo: action.payload.stepTwo,
+                    disabled: false
+                }
+
+                let userInput = []
+                let strArr = action.payload.stepTwo.split(" ");
+                for (var i = 0, tot = strArr.length; i < tot; i++) {
+                    if (strArr[i].includes("<")) {
+                        let key = strArr[i].substring(1, (strArr[i].length - 1));
+                        newStep[key] = '';
+                    }
                 }
 
                 let newScenario = {};
@@ -94,6 +103,7 @@ const reducerCreate = (state = initialState, action) => {
 
             break;
         }
+
         case "REMOVE_SCENARIO": {
             let deleteScenarioId = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload)
 
@@ -104,6 +114,7 @@ const reducerCreate = (state = initialState, action) => {
             }
             break;
         }
+
         case "REMOVE_STEP": {
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload.scenarioId)
             let deleteStepIndex = state.scenarios[scenarioIndex].steps.findIndex(step => step.stepId == action.payload.removeStepId)
@@ -123,6 +134,7 @@ const reducerCreate = (state = initialState, action) => {
             }
             break;
         }
+
         case "SCENARIO_DOWN": {
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload)
 
@@ -138,9 +150,9 @@ const reducerCreate = (state = initialState, action) => {
                     ...state.scenarios.slice(scenarioIndex + 2)]
                 }
             }
-
             break;
         }
+
         case "SCENARIO_UP": {
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload)
 
@@ -156,9 +168,9 @@ const reducerCreate = (state = initialState, action) => {
                     ...state.scenarios.slice(scenarioIndex + 1)]
                 }
             }
-
             break;
         }
+
         case "STEP_DOWN": {
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload.scenarioId)
             let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId == action.payload.stepId)
@@ -185,6 +197,7 @@ const reducerCreate = (state = initialState, action) => {
             }
             break;
         }
+
         case "STEP_UP": {
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload.scenarioId)
             let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId == action.payload.stepId)
@@ -208,6 +221,82 @@ const reducerCreate = (state = initialState, action) => {
                         newScenario,
                     ...state.scenarios.slice(scenarioIndex + 1)]
                 }
+            }
+            break;
+        }
+
+        case "SAVE": {
+            let scenarioIndex = action.payload.scenarioIndex;
+            let stepIndex = action.payload.stepIndex;
+
+            let newStep = {
+                ...state.scenarios[scenarioIndex].steps[stepIndex],
+            }
+            newStep[action.payload.key] = action.payload.inputVal;
+
+            let newScenario = {
+                scenarioId: state.scenarios[scenarioIndex].scenarioId,
+                description: state.scenarios[scenarioIndex].description,
+                steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
+                    newStep,
+                ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
+            }
+
+            state = {
+                ...state,
+                scenarios: [...state.scenarios.slice(0, scenarioIndex),
+                    newScenario,
+                ...state.scenarios.slice(scenarioIndex + 1)]
+            }
+            break;
+        }
+
+        case "DISABLE_INPUT": {
+            let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload.scenarioId)
+            let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId == action.payload.stepId)
+            let newStep = {
+                ...state.scenarios[scenarioIndex].steps[stepIndex],
+                disabled: true
+            }
+
+            let newScenario = {
+                scenarioId: state.scenarios[scenarioIndex].scenarioId,
+                description: state.scenarios[scenarioIndex].description,
+                steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
+                    newStep,
+                ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
+            }
+
+            state = {
+                ...state,
+                scenarios: [...state.scenarios.slice(0, scenarioIndex),
+                    newScenario,
+                ...state.scenarios.slice(scenarioIndex + 1)]
+            }
+            break;
+        }
+
+        case "ENABLE_INPUT": {
+            let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId == action.payload.scenarioId)
+            let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId == action.payload.stepId)
+            let newStep = {
+                ...state.scenarios[scenarioIndex].steps[stepIndex],
+                disabled: false
+            }
+
+            let newScenario = {
+                scenarioId: state.scenarios[scenarioIndex].scenarioId,
+                description: state.scenarios[scenarioIndex].description,
+                steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
+                    newStep,
+                ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
+            }
+
+            state = {
+                ...state,
+                scenarios: [...state.scenarios.slice(0, scenarioIndex),
+                    newScenario,
+                ...state.scenarios.slice(scenarioIndex + 1)]
             }
             break;
         }

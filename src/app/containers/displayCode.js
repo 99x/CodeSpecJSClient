@@ -3,19 +3,32 @@ import { Panel, Button, Checkbox, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { If, Then, Else } from 'react-if';
 
-import { removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown } from '../actions/createActions';
+import { removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown, save, disableInput, enableInput } from '../actions/createActions';
 
 import '../../assets/css/App.css';
 
 class DisplayCode extends React.Component {
 
-    displayInputBox = (event, str) => {
+    displayInputBox = (event, str, stepId, scenarioId) => {
+        let scenarioIndex = this.props.create.scenarios.findIndex(scenario => scenario.scenarioId == scenarioId)
+        let stepIndex = this.props.create.scenarios[scenarioIndex].steps.findIndex(step => step.stepId == stepId)
+
         let strArr = str.split(" ");
         let newArr = [];
 
         for (var i = 0, tot = strArr.length; i < tot; i++) {
             if (strArr[i].includes("<")) {
-                newArr.push(<input type="text" placeholder={strArr[i]} className='stepInputField' />);
+
+                let placeholder = strArr[i].substring(1, (strArr[i].length - 1));
+
+                newArr.push(
+                    <input type="text" placeholder={strArr[i]} className='stepInputField'
+                        value={this.props.create.scenarios[scenarioIndex].steps[stepIndex][placeholder]}
+                        onChange={this.props.save.bind(this, scenarioIndex, stepIndex, placeholder)}
+                        disabled={this.props.create.scenarios[scenarioIndex].steps[stepIndex]["disabled"]}
+                    />
+                );
+
             } else {
                 newArr.push(strArr[i]);
             }
@@ -28,8 +41,6 @@ class DisplayCode extends React.Component {
                 </div>
             );
         })
-
-        console.log(newStep)
         return newStep;
     }
     render() {
@@ -38,7 +49,7 @@ class DisplayCode extends React.Component {
             return (
                 <li key={item.scenarioId}>
                     <p>
-                        <Button className='allButtons'><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
+                        <Button className='allButtons' ><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
                         <Button className='allButtons' onClick={this.props.removeScenario.bind(this, item.scenarioId)}><img src={require('../../assets/images/delete-icon.png')} alt="delete" width="20" height="20" /></Button>
                         <Button className='allButtons' onClick={this.props.scenarioDown.bind(this, item.scenarioId)}><img src={require('../../assets/images/down-arrow.svg')} alt="down" width="20" height="20" /></Button>
                         <Button className='allButtons' onClick={this.props.scenarioUp.bind(this, item.scenarioId)}><img src={require('../../assets/images/up-arrow.png')} alt="up" width="20" height="20" /></Button>
@@ -50,13 +61,13 @@ class DisplayCode extends React.Component {
                                 return (
                                     <li key={step.stepId}>
 
-                                        <Button className='allButtons'><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
+                                        <Button className='allButtons' onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
                                         <Button className='allButtons' onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><img src={require('../../assets/images/delete-icon.png')} alt="delete" width="20" height="20" /></Button>
                                         <Button className='allButtons' onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/down-arrow.svg')} alt="down" width="20" height="20" /></Button>
                                         <Button className='allButtons' onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/up-arrow.png')} alt="up" width="20" height="20" /></Button>
-                                        <Button className='allButtons'><img src={require('../../assets/images/save.svg')} alt="up" width="20" height="20" /></Button>
+                                        <Button className='allButtons' onClick={this.props.disableInput.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/save.svg')} alt="up" width="20" height="20" /></Button>
                                         <span className="blueTag"> &nbsp;&emsp;&emsp;{step.stepOne} </span>{
-                                            this.displayInputBox(this, step.stepTwo)
+                                            this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)
                                         }
                                     </li>);
                             })
@@ -111,6 +122,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         stepUp: (scenarioId, stepId) => {
             dispatch(stepUp(scenarioId, stepId));
+        },
+        save: (scenarioIndex, stepIndex, placeholder, event) => {
+            dispatch(save(scenarioIndex, stepIndex, placeholder, event.target.value));
+        },
+        disableInput: (scenarioId, stepId) => {
+            dispatch(disableInput(scenarioId, stepId));
+        },
+        enableInput: (scenarioId, stepId) => {
+            dispatch(enableInput(scenarioId, stepId));
         }
     };
 };
