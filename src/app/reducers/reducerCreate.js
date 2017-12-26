@@ -300,6 +300,16 @@ const reducerCreate = (state = initialState, action) => {
             }
             break;
         }
+
+        case "REMOVE_FEATURE": {
+            state = {
+                feature: '',
+                scenarios: [],
+                activeIndex: ''
+            }
+            break;
+        }
+
     }
     return state;
 };

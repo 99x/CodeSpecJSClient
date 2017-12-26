@@ -105,3 +105,10 @@ export function enableInput(scenarioId, stepId) {
         }
     };
 }
+
+export function removeFeature() {
+    return {
+        type: "REMOVE_FEATURE",
+        payload: {}
+    };
+}

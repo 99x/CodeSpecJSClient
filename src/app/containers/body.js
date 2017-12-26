@@ -95,7 +95,10 @@ class Body extends Component {
                     </div>
 
                     <br />
-                    <DisplayCode />
+                    <div className="col-sm-10  col-sm-offset-1">
+                        <DisplayCode />
+                    </div>
+
 
                 </div>
             );
