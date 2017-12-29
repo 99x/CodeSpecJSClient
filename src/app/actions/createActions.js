@@ -12,13 +12,19 @@ export function addScenario(scenarioDescription) {
     };
 }
 
-export function addStep(type, detail) {
+export function addOption(option) {
+    return {
+        type: "ADD_OPTION",
+        payload: option
+    };
+}
+
+export function addStep(type) {
     return {
         type: "ADD_STEP",
         payload: {
             scenarioId: "1",
-            stepOne: type,
-            stepTwo: detail
+            stepOne: type
         }
     };
 }

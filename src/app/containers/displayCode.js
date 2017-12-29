@@ -60,16 +60,16 @@ class DisplayCode extends React.Component {
                             item.steps.map((step) => {
                                 return (
                                     <li key={step.stepId}>
-                                        <p>
-                                            <Button className='allButtons' onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
-                                            <Button className='allButtons' onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><img src={require('../../assets/images/delete-icon.png')} alt="delete" width="20" height="20" /></Button>
-                                            <Button className='allButtons' onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/down-arrow.svg')} alt="down" width="20" height="20" /></Button>
-                                            <Button className='allButtons' onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/up-arrow.png')} alt="up" width="20" height="20" /></Button>
-                                            <Button className='allButtons' onClick={this.props.disableInput.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/save.svg')} alt="up" width="20" height="20" /></Button>
-                                            <span className="blueTag"> &nbsp;&emsp;&emsp;{step.stepOne} </span>{
-                                                this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)
-                                            }
-                                        </p>
+
+                                        <Button className='allButtons' onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
+                                        <Button className='allButtons' onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><img src={require('../../assets/images/delete-icon.png')} alt="delete" width="20" height="20" /></Button>
+                                        <Button className='allButtons' onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/down-arrow.svg')} alt="down" width="20" height="20" /></Button>
+                                        <Button className='allButtons' onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/up-arrow.png')} alt="up" width="20" height="20" /></Button>
+                                        <Button className='allButtons' onClick={this.props.disableInput.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/save.svg')} alt="up" width="20" height="20" /></Button>
+                                        <span className="blueTag"> &nbsp;&emsp;&emsp;{step.stepOne} </span>{
+                                            this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)
+                                        }
+
                                     </li>);
                             })
                         }

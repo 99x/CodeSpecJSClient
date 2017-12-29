@@ -3,7 +3,8 @@ import ShortUniqueId from 'short-unique-id';
 const initialState = {
     feature: '',
     scenarios: [],
-    activeIndex: ''
+    activeIndex: '',
+    selectedOption: ''
 }
 
 // const initialState = {
@@ -63,12 +64,12 @@ const reducerCreate = (state = initialState, action) => {
                 var newStep = {
                     stepId: uid.randomUUID(6),
                     stepOne: action.payload.stepOne,
-                    stepTwo: action.payload.stepTwo,
+                    stepTwo: state.selectedOption.label,
                     disabled: false
                 }
 
                 let userInput = []
-                let strArr = action.payload.stepTwo.split(" ");
+                let strArr = state.selectedOption.label.split(" ");
                 for (var i = 0, tot = strArr.length; i < tot; i++) {
                     if (strArr[i].includes("<")) {
                         let key = strArr[i].substring(1, (strArr[i].length - 1));
@@ -101,6 +102,15 @@ const reducerCreate = (state = initialState, action) => {
                 }
             }
 
+            break;
+        }
+
+        case "ADD_OPTION": {
+            const value = action.payload === null ? '' : action.payload
+            state = {
+                ...state,
+                selectedOption: value
+            }
             break;
         }
 
