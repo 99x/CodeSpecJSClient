@@ -315,7 +315,8 @@ const reducerCreate = (state = initialState, action) => {
             state = {
                 feature: '',
                 scenarios: [],
-                activeIndex: ''
+                activeIndex: '',
+                selectedOption: ''
             }
             break;
         }

@@ -2,12 +2,17 @@ import React from 'react';
 import { Panel, Button, Checkbox, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { If, Then, Else } from 'react-if';
+import AlertIcon from 'mdi-react/AlertIcon';
 
 import { removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown, save, disableInput, enableInput, removeFeature } from '../actions/createActions';
 
 import '../../assets/css/App.css';
 
 class DisplayCode extends React.Component {
+    ShowButton = (x) => {
+        x.opacity = 0.5;;
+
+    }
 
     displayInputBox = (event, str, stepId, scenarioId) => {
         let scenarioIndex = this.props.create.scenarios.findIndex(scenario => scenario.scenarioId == scenarioId)
@@ -49,31 +54,33 @@ class DisplayCode extends React.Component {
             return (
                 <li key={item.scenarioId}>
                     <p>
-                        <Button className='allButtons' ><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
-                        <Button className='allButtons' onClick={this.props.removeScenario.bind(this, item.scenarioId)}><img src={require('../../assets/images/delete-icon.png')} alt="delete" width="20" height="20" /></Button>
-                        <Button className='allButtons' onClick={this.props.scenarioDown.bind(this, item.scenarioId)}><img src={require('../../assets/images/down-arrow.svg')} alt="down" width="20" height="20" /></Button>
-                        <Button className='allButtons' onClick={this.props.scenarioUp.bind(this, item.scenarioId)}><img src={require('../../assets/images/up-arrow.png')} alt="up" width="20" height="20" /></Button>
+                        <Button className='allButtons' ><span className="allIcons mdi mdi-pencil" /></Button>
+                        <Button className='allButtons' onClick={this.props.removeScenario.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></Button>
+                        <Button className='allButtons' onClick={this.props.scenarioDown.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></Button>
+                        <Button className='allButtons' onClick={this.props.scenarioUp.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></Button>
                         <span className="blueTag"> &nbsp;&emsp;Test Case: </span>{item.description}
+
+                        <ul>
+                            {
+                                item.steps.map((step) => {
+                                    return (
+                                        <li key={step.stepId}>
+
+                                            <Button className='allButtons' onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-pencil" /></Button>
+                                            <Button className='allButtons' onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></Button>
+                                            <Button className='allButtons' onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></Button>
+                                            <Button className='allButtons' onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></Button>
+                                            <Button className='allButtons' onClick={this.props.disableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-content-save" /></Button>
+                                            <span className="blueTag"> &nbsp;&emsp;&emsp;{step.stepOne} </span>{
+                                                this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)
+                                            }
+
+                                        </li>);
+                                })
+                            }
+                        </ul>
                     </p>
-                    <ul>
-                        {
-                            item.steps.map((step) => {
-                                return (
-                                    <li key={step.stepId}>
-
-                                        <Button className='allButtons' onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
-                                        <Button className='allButtons' onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><img src={require('../../assets/images/delete-icon.png')} alt="delete" width="20" height="20" /></Button>
-                                        <Button className='allButtons' onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/down-arrow.svg')} alt="down" width="20" height="20" /></Button>
-                                        <Button className='allButtons' onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/up-arrow.png')} alt="up" width="20" height="20" /></Button>
-                                        <Button className='allButtons' onClick={this.props.disableInput.bind(this, item.scenarioId, step.stepId)}><img src={require('../../assets/images/save.svg')} alt="up" width="20" height="20" /></Button>
-                                        <span className="blueTag"> &nbsp;&emsp;&emsp;{step.stepOne} </span>{
-                                            this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)
-                                        }
-
-                                    </li>);
-                            })
-                        }
-                    </ul>
+                    <br />
                 </li>
             );
         });
@@ -84,9 +91,11 @@ class DisplayCode extends React.Component {
                     <Panel header=".feature">
                         <If condition={this.props.create.feature != ''}>
                             <div className="featureCode" >
-                                <p> <Button className='allButtons' ><img src={require('../../assets/images/edit_icon.png')} alt="edit" width="20" height="20" /></Button>
-                                    <Button className='allButtons' onClick={this.props.removeFeature.bind(this)}><img src={require('../../assets/images/delete-icon.png')} alt="delete" width="20" height="20" /></Button>
-                                    <span className="orangeTag"> &nbsp; Test Suite: </span> {this.props.create.feature} </p>
+
+                                <Button className='allButtons'><span className="allIcons mdi mdi-pencil" /></Button>
+                                <Button className='allButtons' onClick={this.props.removeFeature.bind(this)}><span className="allIcons mdi mdi-delete" /></Button>
+                                <span className="orangeTag show-code"> &nbsp; Test Suite: </span> {this.props.create.feature}
+
                                 <ul>
                                     {scenarios}
                                 </ul>
