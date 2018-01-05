@@ -4,6 +4,7 @@
     padding: 20px;
     color: white;
     text-align: center;
+    width: 100%;
 }
 
 .App-title {
@@ -16,6 +17,10 @@
     font-size: large;
     font-style: normal;
     font-family: Courier;
+}
+
+.code-font {
+    font-size: 16px;
 }
 
 .Navbar {
@@ -31,10 +36,14 @@
 }
 
 .allButtons {
-    padding: 3px 3px;
+    padding: 0px 0px;
     border: none;
     background: transparent;
     box-shadow: none;
+}
+
+.allButtons:hover {
+    background: transparent;
 }
 
 .CreateTest {
@@ -43,7 +52,7 @@
 
 .container {
     display: flex;
-    max-width: 70%;
+    /* max-width: 70%; */
 }
 
 #input-field {
@@ -51,7 +60,11 @@
 }
 
 #dropdown {
-    min-width: 700px;
+    width: 100%;
+}
+
+#drop-down-set-width {
+    width: 80%;
 }
 
 .form {
@@ -87,6 +100,13 @@
     font-size: 1.13em;
 }
 
+.more-options {
+    padding-bottom: 0%;
+    padding-top: 0%;
+    padding-left: 0%;
+    padding-right: 0%;
+}
+
 .blueTag {
     color: #1d2beb;
 }
@@ -94,6 +114,16 @@
 .orangeTag {
     color: #f55207;
 }
+
+.padding {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+/* .padding:hover {
+    background: yellow;
+} */
 
 ul {
     list-style-type: none;
@@ -107,38 +137,67 @@ ul {
 }
 
 .stepInputField {
-    max-width: 15%;
     display: inline;
     border: none;
     border-bottom: 1px solid rgb(146, 147, 150);
     text-align: center;
-    margin: 3px;
     padding: 2px;
     color: rgb(125, 125, 133);
+    background: transparent;
 }
 
-.transparent-button {
-    opacity: 0;
-    transition: opacity .35s ease;
+.icon-size {
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
 }
 
-.transparent-button:hover {
-    background: #fff;
-    color: #000;
-    opacity: 0.5;
-    transition: all 0.5s ease-in;
+ul.dropdown-menu>li {
+    float: left;
+    /* display: inline; */
 }
 
-.show-code {
-    opacity: 0.5;
+ul.dropdown-menu {
+    transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
 }
 
-.some-class {
-    cursor: pointer;
+.dropdown-menu>li>a {
+    display: inline;
+    padding-right: 0px;
+    min-height: 27px
+}
+
+.highlight-line:hover {
+    background: yellow;
+}
+
+.dropdown-menu {
+    min-width: 200px;
+    top: 0%;
+    right: 100%;
+    left: unset;
+}
+
+.align-right {
+    float: right;
+}
+
+.align-center {
+    min-width: 80%;
+    margin-left: 10%;
+}
+
+.align-inline {
+    display: inline-block;
+}
+
+.object-field-length {
+    max-width: 20%;
 }
 
 .mdi::before {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 14px;
 }
 
@@ -221,5 +280,5 @@ ul {
 
 .allIcons:hover {
     cursor: pointer;
-    color: #000;
+    color: rgb(4, 134, 134);
 }

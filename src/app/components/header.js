@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import '../../assets/css/App.css';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
-import Body from '../containers/body';
+import Body from './body';
 
 class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            create: false,
-            view: true,
+            create: true,
+            view: false,
+            repo: false
         };
     }
     render() {
@@ -24,13 +25,14 @@ class Header extends Component {
                 <Navbar className="Navbar" inverse collapseOnSelect>
                     <Navbar.Collapse>
                         <Nav>
-                            <NavItem eventKey={1} onClick={() => { this.setState({ view: true }); this.setState({ create: false }) }}>Your Tests</NavItem>
-                            <NavItem eventKey={2} onClick={() => { this.setState({ create: true }); this.setState({ view: false }) }}>Create Test</NavItem>
+                            <NavItem eventKey={1} onClick={() => { this.setState({ view: true }); this.setState({ create: false }); this.setState({ repo: false }); }}>Your Tests</NavItem>
+                            <NavItem eventKey={2} onClick={() => { this.setState({ create: true }); this.setState({ view: false }); this.setState({ repo: false }); }}>Create Test</NavItem>
+                            <NavItem eventKey={3} onClick={() => { this.setState({ create: false }); this.setState({ view: false }); this.setState({ repo: true }); }}>Object Repo</NavItem>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
 
-                <Body showCreate={this.state.create} showView={this.state.view} />
+                <Body showCreate={this.state.create} showView={this.state.view} showRepo={this.state.repo} />
 
             </div>
         );

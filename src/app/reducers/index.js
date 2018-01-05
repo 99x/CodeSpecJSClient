@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import ReducerCreate from './reducerCreate';
+import CreateTestReducer from './createTestReducer';
+import CreateObjectReducer from './createObjectReducer';
 
 const allReducers = combineReducers({
-    reducerCreate: ReducerCreate
+    createTestReducer: CreateTestReducer,
+    createObjectReducer: CreateObjectReducer
 });
 
 export default allReducers;

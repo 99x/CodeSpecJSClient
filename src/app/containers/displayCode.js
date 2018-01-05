@@ -1,22 +1,16 @@
 import React from 'react';
-import { Panel, Button, Checkbox, FormControl } from 'react-bootstrap';
+import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { If, Then, Else } from 'react-if';
-import AlertIcon from 'mdi-react/AlertIcon';
+import { If } from 'react-if';
 
-import { removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown, save, disableInput, enableInput, removeFeature } from '../actions/createActions';
-
+import { removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown, save, disableInput, enableInput, removeFeature } from '../actions/createTestActions';
 import '../../assets/css/App.css';
 
 class DisplayCode extends React.Component {
-    ShowButton = (x) => {
-        x.opacity = 0.5;;
-
-    }
 
     displayInputBox = (event, str, stepId, scenarioId) => {
-        let scenarioIndex = this.props.create.scenarios.findIndex(scenario => scenario.scenarioId == scenarioId)
-        let stepIndex = this.props.create.scenarios[scenarioIndex].steps.findIndex(step => step.stepId == stepId)
+        let scenarioIndex = this.props.create.scenarios.findIndex(scenario => scenario.scenarioId === scenarioId)
+        let stepIndex = this.props.create.scenarios[scenarioIndex].steps.findIndex(step => step.stepId === stepId)
 
         let strArr = str.split(" ");
         let newArr = [];
@@ -48,70 +42,143 @@ class DisplayCode extends React.Component {
         })
         return newStep;
     }
+
+    // mouseEnter = (divId, text, e) => {
+    //     let myElement = document.getElementById(text + '_li');
+    //     if (myElement) {
+    //         myElement.buttonId = divId;
+    //         myElement.addEventListener('mouseleave', this.mouseOut, false)
+    //         document.getElementById(divId).style.visibility = "visible";
+    //     }
+    // }
+
+    // mouseOut = (e) => {
+    //     document.getElementById(e.target.buttonId).style.visibility = "hidden";
+    // }
+
+    // showButtonOnClick = (divId, text, e) => {
+    //     let myElement = document.getElementById(text);
+    //     myElement.buttonId = divId;
+    //     myElement.removeEventListener('mouseleave', this.mouseOut, false)
+    // }
+
     render() {
 
         const scenarios = this.props.create.scenarios.map((item) => {
             return (
                 <li key={item.scenarioId}>
-                    <p>
+                    <div className="padding highlight-line">
+                        <span className="blueTag">&emsp; Test Case: </span>{item.description}
+
+                        <div className="align-right">
+                            <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                noCaret id="dropdown-no-caret">
+                                <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
+                                <MenuItem eventKey="2"><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                <MenuItem eventKey="3"><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
+                                <MenuItem eventKey="4"><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
+                            </DropdownButton>
+                        </div>
+                    </div>
+
+                    {/*
+                    <div className="align-inline" id={item.scenarioId + "b"}>
                         <Button className='allButtons' ><span className="allIcons mdi mdi-pencil" /></Button>
                         <Button className='allButtons' onClick={this.props.removeScenario.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></Button>
                         <Button className='allButtons' onClick={this.props.scenarioDown.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></Button>
                         <Button className='allButtons' onClick={this.props.scenarioUp.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></Button>
-                        <span className="blueTag"> &nbsp;&emsp;Test Case: </span>{item.description}
+                    </div>
 
-                        <ul>
-                            {
-                                item.steps.map((step) => {
-                                    return (
-                                        <li key={step.stepId}>
+                    <div className="align-inline" id={item.scenarioId}
+                        onClick={this.showButtonOnClick.bind(this, item.scenarioId + "b", item.scenarioId)}
+                        onMouseEnter={this.mouseEnter.bind(this, item.scenarioId + "b", item.scenarioId)} >
+                        <span className="blueTag"> Test Case: </span>{item.description}
+                    </div>
+                    */}
 
+                    <ul>
+                        {
+                            item.steps.map((step) => {
+                                return (
+                                    <li className="highlight-line" key={step.stepId} >
+                                        <span className="blueTag"> &emsp;&emsp; {step.stepOne} </span>
+                                        {this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)}
+                                        <div className="align-right">
+                                            <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                                noCaret id="dropdown-no-caret">
+                                                <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
+                                                <MenuItem eventKey="2"><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                                <MenuItem eventKey="3"><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
+                                                <MenuItem eventKey="4"><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
+                                                <MenuItem eventKey="4"><span className="allIcons mdi mdi-content-save" /></MenuItem>
+                                            </DropdownButton>
+                                        </div>
+                                    </li>);
+                                {/*    
+                                        <div className="align-inline" id={step.stepId + "b"}>
                                             <Button className='allButtons' onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-pencil" /></Button>
                                             <Button className='allButtons' onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></Button>
-                                            <Button className='allButtons' onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></Button>
-                                            <Button className='allButtons' onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></Button>
+                                            <Button className='allButtons' onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></Button>
+                                            <Button className='allButtons' onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></Button>
                                             <Button className='allButtons' onClick={this.props.disableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-content-save" /></Button>
-                                            <span className="blueTag"> &nbsp;&emsp;&emsp;{step.stepOne} </span>{
-                                                this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)
-                                            }
+                                        </div>
 
-                                        </li>);
-                                })
-                            }
-                        </ul>
-                    </p>
+                                        <div className="align-inline" id={step.stepId} onClick={this.showButtonOnClick.bind(this, step.stepId + "b", step.stepId)} >
+                                            <span className="blueTag"> {step.stepOne} </span>
+                                            {this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)}
+                                        </div>
+                                         */}
+
+                            })
+                        }
+                    </ul>
+
                     <br />
                 </li>
             );
         });
 
         return (
-            <div>
-                <div className="col-sm-12 col-sm-offset-1">
-                    <Panel header=".feature">
-                        <If condition={this.props.create.feature != ''}>
-                            <div className="featureCode" >
+            <Panel className="align-center" header=".feature">
+                <If condition={this.props.create.feature !== ''}>
+                    <div className="code-font">
+                        <div className="highlight-line">
+                            <span className="orangeTag "> Test Suite: </span> {this.props.create.feature}
 
-                                <Button className='allButtons'><span className="allIcons mdi mdi-pencil" /></Button>
-                                <Button className='allButtons' onClick={this.props.removeFeature.bind(this)}><span className="allIcons mdi mdi-delete" /></Button>
-                                <span className="orangeTag show-code"> &nbsp; Test Suite: </span> {this.props.create.feature}
-
-                                <ul>
-                                    {scenarios}
-                                </ul>
+                            <div className="align-right">
+                                <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                    noCaret id="dropdown-no-caret">
+                                    <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
+                                    <MenuItem eventKey="2" onClick={this.props.removeFeature.bind(this)}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                </DropdownButton>
                             </div>
-                        </If>
-                    </Panel>
-                </div>
-            </div>
+                        </div>
 
+                        {/* 
+                        <div className="align-inline" id="feature">
+                            <Button className="allButtons" ><span className="allIcons mdi mdi-pencil" /></Button>
+                            <Button className="allButtons" onClick={this.props.removeFeature.bind(this)}><span className="allIcons mdi mdi-delete" /></Button>
+                        </div>
+
+                        <div className="align-inline" id="feature-description"
+                            onClick={this.showButtonOnClick.bind(this, "feature", "feature-description")}
+                            onMouseEnter={this.mouseEnter.bind(this, "feature", "feature-description")} >
+                            
+                        </div>
+                    */}
+                        <ul>
+                            {scenarios}
+                        </ul>
+                    </div>
+                </If>
+            </Panel>
         );
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        create: state.reducerCreate
+        create: state.createTestReducer
     }
 }
 
@@ -144,6 +211,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         enableInput: (scenarioId, stepId) => {
             dispatch(enableInput(scenarioId, stepId));
         },
+
         removeFeature: () => {
             dispatch(removeFeature());
         }
