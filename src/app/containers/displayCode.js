@@ -7,6 +7,15 @@ import { removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown,
 import '../../assets/css/App.css';
 
 class DisplayCode extends React.Component {
+    enableTextField = (e) => {
+        console.log("COMING HERE");
+        document.getElementById(e.target.id).removeAttribute("readonly");
+    }
+
+    disableTextField = (e) => {
+        console.log("DISBLE");
+        document.getElementById(e.target.id).setAttribute("readonly", true);
+    }
 
     displayInputBox = (event, str, stepId, scenarioId) => {
         let scenarioIndex = this.props.create.scenarios.findIndex(scenario => scenario.scenarioId === scenarioId)
@@ -16,15 +25,21 @@ class DisplayCode extends React.Component {
         let newArr = [];
 
         for (var i = 0, tot = strArr.length; i < tot; i++) {
+
             if (strArr[i].includes("<")) {
 
+                console.log(typeof stepId)
+                console.log(typeof i)
+                console.log(typeof i.toString())
+
                 let placeholder = strArr[i].substring(1, (strArr[i].length - 1));
+                let elementID = stepId + i.toString();
 
                 newArr.push(
-                    <input type="text" placeholder={strArr[i]} className='stepInputField'
+                    <input type="text" placeholder={strArr[i]} className='stepInputField' id={elementID}
                         value={this.props.create.scenarios[scenarioIndex].steps[stepIndex][placeholder]}
                         onChange={this.props.save.bind(this, scenarioIndex, stepIndex, placeholder)}
-                        disabled={this.props.create.scenarios[scenarioIndex].steps[stepIndex]["disabled"]}
+
                     />
                 );
 
@@ -35,13 +50,17 @@ class DisplayCode extends React.Component {
 
         const newStep = newArr.map((word, i) => {
             return (
-                <div key={i} className='printStep'>
+                <React.Fragment key={i}>
                     {word}&nbsp;
-                </div>
+                </React.Fragment>
             );
         })
         return newStep;
     }
+
+    // onFocus = { this.props.enableInput.bind(this, scenarioIndex, stepIndex) }
+    // onBlur = { this.props.disableInput.bind(this, scenarioIndex, stepIndex) }
+    // readOnly={this.props.create.scenarios[scenarioIndex].steps[stepIndex]["disabled"]}
 
     // mouseEnter = (divId, text, e) => {
     //     let myElement = document.getElementById(text + '_li');
@@ -74,9 +93,9 @@ class DisplayCode extends React.Component {
                             <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                 noCaret id="dropdown-no-caret">
                                 <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
-                                <MenuItem eventKey="2"><span className="allIcons mdi mdi-delete" /></MenuItem>
-                                <MenuItem eventKey="3"><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
-                                <MenuItem eventKey="4"><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
+                                <MenuItem eventKey="2" onClick={this.props.removeScenario.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                <MenuItem eventKey="3" onClick={this.props.scenarioUp.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
+                                <MenuItem eventKey="4" onClick={this.props.scenarioDown.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
                             </DropdownButton>
                         </div>
                     </div>
@@ -104,17 +123,32 @@ class DisplayCode extends React.Component {
                                         <span className="blueTag"> &emsp;&emsp; {step.stepOne} </span>
                                         {this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)}
                                         <div className="align-right">
-                                            <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
-                                                noCaret id="dropdown-no-caret">
-                                                <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
-                                                <MenuItem eventKey="2"><span className="allIcons mdi mdi-delete" /></MenuItem>
-                                                <MenuItem eventKey="3"><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
-                                                <MenuItem eventKey="4"><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
-                                                <MenuItem eventKey="4"><span className="allIcons mdi mdi-content-save" /></MenuItem>
-                                            </DropdownButton>
+                                            <div className="align-right">
+                                                <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                                    noCaret id="dropdown-no-caret">
+                                                    <MenuItem eventKey="1" onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-pencil" /></MenuItem>
+                                                    <MenuItem eventKey="2" onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                                    <MenuItem eventKey="3" onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
+                                                    <MenuItem eventKey="4" onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
+                                                    <MenuItem eventKey="5" onClick={this.props.disableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-content-save" /></MenuItem>
+                                                </DropdownButton>
+                                            </div>
                                         </div>
                                     </li>);
                                 {/*    
+                                
+                                        <div className="align-right">
+                                            <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                                noCaret id="dropdown-no-caret">
+                                                <MenuItem eventKey="1" ><span className="allIcons mdi mdi-pencil" /></MenuItem>
+                                                <MenuItem eventKey="2" onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                                <MenuItem eventKey="3" onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
+                                                <MenuItem eventKey="4" onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
+                                                <MenuItem eventKey="5" ><span className="allIcons mdi mdi-content-save" /></MenuItem>
+                                            </DropdownButton>
+                                        </div>
+                                
+                                
                                         <div className="align-inline" id={step.stepId + "b"}>
                                             <Button className='allButtons' onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-pencil" /></Button>
                                             <Button className='allButtons' onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></Button>
@@ -209,6 +243,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(disableInput(scenarioId, stepId));
         },
         enableInput: (scenarioId, stepId) => {
+            console.log("ENABLE INPUT FIELD")
             dispatch(enableInput(scenarioId, stepId));
         },
 

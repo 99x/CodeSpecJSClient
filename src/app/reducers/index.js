@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import CreateTestReducer from './createTestReducer';
-import CreateObjectReducer from './createObjectReducer';
+
+import { reducer as reduxFormReducer } from 'redux-form';
 
 const allReducers = combineReducers({
-    createTestReducer: CreateTestReducer,
-    createObjectReducer: CreateObjectReducer
+    form: reduxFormReducer,
+    createTestReducer: CreateTestReducer
+
 });
 
 export default allReducers;
