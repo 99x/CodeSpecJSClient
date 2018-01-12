@@ -1,10 +1,10 @@
 import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
-import { Button, FormControl } from 'react-bootstrap';
+import { Button, FormControl, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import '../../assets/css/App.css';
-import validate from './validate';
-// validate={required}
+import validateObjects from './validateObjects';
+import { If } from 'react-if';
 
 const required = value => (value ? "" : "required")
 
@@ -18,17 +18,14 @@ class CreateObject extends React.Component {
         document.getElementById(e.target.id).setAttribute("readonly", true);
     }
 
-    renderField = ({ input, label, type, id, meta: { touched, error } }) => (
-
+    renderField = ({ input, label, type, id, meta: { touched, error }, ...props }) => (
         <React.Fragment>
-            {/* {touched && error && <span>{error}</span>}  */}
+            {/* {touched && error && <span>{error}</span>} */}
 
             <FormControl className={`align-inline object-field-length ${(touched && error) ? 'error' : ''}`}
                 {...input} type={type} placeholder={label} id={id}
-                touchOnBlur={this.enableTextField.bind(this)}
-                touchOnChange={this.disableTextField.bind(this)}
-            />
 
+            />
 
         </React.Fragment>
     );
@@ -36,11 +33,20 @@ class CreateObject extends React.Component {
     renderObjects = ({ fields, meta: { touched, error, submitFailed } }) => {
         console.log(touched, error, submitFailed);
         return (
+
             <ul>
+
                 <li>
                     <center>
+
                         <Button bsStyle="success" onClick={() => fields.push({})}>Add New Object</Button>
+                        <If condition={error}>
+                            <Alert bsStyle="warning" className="set-alert-width">
+                                <strong>Error: </strong> {error}
+                            </Alert>
+                        </If>
                     </center>
+
                 </li>
                 {fields.map((object, index) => (
                     <li key={index}>
@@ -96,7 +102,6 @@ class CreateObject extends React.Component {
 
         const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
         console.log("this.props")
-        console.log(this.props);
         console.log(invalid);
 
         return (
@@ -112,22 +117,7 @@ class CreateObject extends React.Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        objects: state.form
-    }
-}
-
-const mapDispatchToProps = (dispatch) => ({
-    // ...
-});
-
-CreateObject = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CreateObject);
-
 export default reduxForm({
     form: 'ObjectRepo',
-    validate
+    validate: validateObjects
 })(CreateObject); 

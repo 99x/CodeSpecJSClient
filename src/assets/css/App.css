@@ -210,8 +210,13 @@ ul.dropdown-menu {
 }
 
 .error {
-    border: 1.5px solid rgba(75, 142, 243, 0.774);
+    border: 1.5px solid rgba(255, 5, 5, 0.384);
     /* background-color: #f0d3d3; */
+}
+
+.set-alert-width {
+    width: 60%;
+    margin-top: 15px;
 }
 
 
