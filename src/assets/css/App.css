@@ -1,6 +1,6 @@
 .App-header {
-    background-color: #222;
-    height: 150px;
+    background-color: #2d2d2d;
+    ;
     padding: 20px;
     color: white;
     text-align: center;
@@ -20,7 +20,7 @@
 }
 
 .code-font {
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .Navbar {
@@ -89,7 +89,6 @@
 .panel {
     max-width: 80%;
     min-height: 300px;
-    font-style: italic;
     margin: 20px;
 }
 
@@ -143,9 +142,9 @@ ul {
 .stepInputField {
     display: inline;
     border: none;
-    border-bottom: 1px solid rgb(146, 147, 150);
+    border-bottom: 1px solid rgb(186, 187, 190);
     text-align: center;
-    padding: 2px;
+    padding: 1px;
     color: rgb(125, 125, 133);
     background: transparent;
 }
@@ -177,11 +176,11 @@ ul.dropdown-menu {
 }
 
 .highlight-line:hover {
-    background: yellow;
+    background: rgba(134, 134, 132, 0.11);
 }
 
 .highlight-line {
-    min-height: 25px;
+    min-height: 27px;
 }
 
 .dropdown-menu {

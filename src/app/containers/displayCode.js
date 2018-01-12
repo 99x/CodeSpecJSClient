@@ -90,7 +90,7 @@ class DisplayCode extends React.Component {
                         <span className="blueTag">&emsp; Test Case: </span>{item.description}
 
                         <div className="align-right">
-                            <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                            <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                 noCaret id="dropdown-no-caret">
                                 <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
                                 <MenuItem eventKey="2" onClick={this.props.removeScenario.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
@@ -124,13 +124,11 @@ class DisplayCode extends React.Component {
                                         {this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)}
                                         <div className="align-right">
                                             <div className="align-right">
-                                                <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                                <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                                     noCaret id="dropdown-no-caret">
-                                                    <MenuItem eventKey="1" onClick={this.props.enableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-pencil" /></MenuItem>
                                                     <MenuItem eventKey="2" onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
                                                     <MenuItem eventKey="3" onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
                                                     <MenuItem eventKey="4" onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
-                                                    <MenuItem eventKey="5" onClick={this.props.disableInput.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-content-save" /></MenuItem>
                                                 </DropdownButton>
                                             </div>
                                         </div>
@@ -180,7 +178,7 @@ class DisplayCode extends React.Component {
                             <span className="orangeTag "> Test Suite: </span> {this.props.create.feature}
 
                             <div className="align-right">
-                                <DropdownButton bsStyle="warning" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                     noCaret id="dropdown-no-caret">
                                     <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
                                     <MenuItem eventKey="2" onClick={this.props.removeFeature.bind(this)}><span className="allIcons mdi mdi-delete" /></MenuItem>
@@ -239,14 +237,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         save: (scenarioIndex, stepIndex, placeholder, event) => {
             dispatch(save(scenarioIndex, stepIndex, placeholder, event.target.value));
         },
-        disableInput: (scenarioId, stepId) => {
-            dispatch(disableInput(scenarioId, stepId));
-        },
-        enableInput: (scenarioId, stepId) => {
-            console.log("ENABLE INPUT FIELD")
-            dispatch(enableInput(scenarioId, stepId));
-        },
-
         removeFeature: () => {
             dispatch(removeFeature());
         }
