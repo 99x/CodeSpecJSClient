@@ -2,11 +2,34 @@ import React from 'react';
 import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { If } from 'react-if';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 import { removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown, save, disableInput, enableInput, removeFeature } from '../actions/createTestActions';
 import '../../assets/css/App.css';
 
 class DisplayCode extends React.Component {
+
+    confirmDelete = (type, scenarioId, stepId, e) => {
+        confirmAlert({
+            title: 'Confirm to delete',
+            message: 'Are you sure you want to permanently delete this?',
+            confirmLabel: 'Delete',
+            cancelLabel: 'Cancel',
+            onConfirm: () => {
+                if (type === "feature") {
+                    console.log("coming here")
+                    this.props.removeFeature()
+                } else if (type === "scenario") {
+                    this.props.removeScenario(scenarioId)
+                } else if (type === "step") {
+                    this.props.removeStep(stepId, scenarioId)
+                }
+            },
+
+        })
+    };
+
     enableTextField = (e) => {
         console.log("COMING HERE");
         document.getElementById(e.target.id).removeAttribute("readonly");
@@ -89,7 +112,7 @@ class DisplayCode extends React.Component {
                             <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                 noCaret id="dropdown-no-caret">
                                 <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
-                                <MenuItem eventKey="2" onClick={this.props.removeScenario.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                <MenuItem eventKey="2" onClick={this.confirmDelete.bind(this, "scenario", item.scenarioId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
                                 <MenuItem eventKey="3" onClick={this.props.scenarioUp.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
                                 <MenuItem eventKey="4" onClick={this.props.scenarioDown.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
                             </DropdownButton>
@@ -122,7 +145,7 @@ class DisplayCode extends React.Component {
                                             <div className="align-right">
                                                 <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                                     noCaret id="dropdown-no-caret">
-                                                    <MenuItem eventKey="2" onClick={this.props.removeStep.bind(this, step.stepId, item.scenarioId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                                    <MenuItem eventKey="2" onClick={this.confirmDelete.bind(this, "step", item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
                                                     <MenuItem eventKey="3" onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
                                                     <MenuItem eventKey="4" onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
                                                 </DropdownButton>
@@ -177,7 +200,7 @@ class DisplayCode extends React.Component {
                                 <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                     noCaret id="dropdown-no-caret">
                                     <MenuItem eventKey="1"><span className="allIcons mdi mdi-pencil" /></MenuItem>
-                                    <MenuItem eventKey="2" onClick={this.props.removeFeature.bind(this)}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                    <MenuItem eventKey="2" onClick={this.confirmDelete.bind(this, "feature")}><span className="allIcons mdi mdi-delete" /></MenuItem>
                                 </DropdownButton>
                             </div>
                         </div>
@@ -234,6 +257,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(save(scenarioIndex, stepIndex, placeholder, event.target.value));
         },
         removeFeature: () => {
+            console.log("dispatch remove feature");
             dispatch(removeFeature());
         }
     };
