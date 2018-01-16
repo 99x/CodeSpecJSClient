@@ -36,8 +36,9 @@ const createTestReducer = (state = initialState, action) => {
             break;
 
         case "ADD_SCENARIO": {
-            if (state.feature === '') {
+            if (state.feature === '' || action.payload === '') {
                 console.log("ERROR MESSAGE : NEED TO ADD FEATURE FIRST")
+                console.log("ERROR MESSAGE : SCENARIO CANNOT BE EMPTY")
                 //SEND ERROR MESSAGE : NEED TO ADD FEATURE FIRST
                 break;
             } else {
@@ -63,6 +64,9 @@ const createTestReducer = (state = initialState, action) => {
             if (arrayIndex === 0) {
                 console.log("ERROR MESSAGE : NEED TO ADD Scenario FIRST")
                 //SEND ERROR MESSAGE : NEED TO ADD Scenario FIRST
+            } else if (state.selectedOption === "") {
+                console.log("ERROR MESSAGE : Step cannot be empty")
+
             } else {
                 let newStepId = uid.randomUUID(6);
                 var newStep = {

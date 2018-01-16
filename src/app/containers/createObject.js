@@ -40,7 +40,7 @@ class CreateObject extends React.Component {
                     <center>
 
                         <Button bsStyle="success" onClick={() => fields.push({})}>Add New Object</Button>
-                        <If condition={error}>
+                        <If condition={error !== undefined} >
                             <Alert bsStyle="warning" className="set-alert-width">
                                 <strong>Error: </strong> {error}
                             </Alert>
