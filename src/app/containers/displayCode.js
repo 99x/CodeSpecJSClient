@@ -28,10 +28,6 @@ class DisplayCode extends React.Component {
 
             if (strArr[i].includes("<")) {
 
-                console.log(typeof stepId)
-                console.log(typeof i)
-                console.log(typeof i.toString())
-
                 let placeholder = strArr[i].substring(1, (strArr[i].length - 1));
                 let elementID = stepId + i.toString();
 

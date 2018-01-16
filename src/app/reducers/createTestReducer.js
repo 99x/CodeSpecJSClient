@@ -178,6 +178,9 @@ const createTestReducer = (state = initialState, action) => {
                 let scenario = state.scenarios[scenarioIndex]
                 let scenarioAbove = state.scenarios[scenarioIndex - 1]
 
+                console.log("scenario up");
+                console.log(...state.scenarios.slice(0, (scenarioIndex - 1)))
+
                 state = {
                     ...state,
                     scenarios: [...state.scenarios.slice(0, (scenarioIndex - 1)),
@@ -190,6 +193,7 @@ const createTestReducer = (state = initialState, action) => {
         }
 
         case "STEP_DOWN": {
+
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
             let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId === action.payload.stepId)
 
@@ -208,10 +212,11 @@ const createTestReducer = (state = initialState, action) => {
 
                 state = {
                     ...state,
-                    scenarios: [...state.scenarios.slice(0, (scenarioIndex - 1)),
+                    scenarios: [...state.scenarios.slice(0, scenarioIndex),
                         newScenario,
                     ...state.scenarios.slice(scenarioIndex + 1)]
                 }
+                console.log(state);
             }
             break;
         }
