@@ -149,6 +149,16 @@ ul {
     background: transparent;
 }
 
+.description__edit {
+    border: none;
+    background-color: transparent;
+    width: 70%
+}
+
+.description__edit--show {
+    border-bottom: 1px solid rgb(186, 187, 190);
+}
+
 
 /* .icon-size {
     padding-top: 5px;

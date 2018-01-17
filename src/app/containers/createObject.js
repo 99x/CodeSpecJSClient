@@ -10,14 +10,6 @@ const required = value => (value ? "" : "required")
 
 class CreateObject extends React.Component {
 
-    enableTextField = (e) => {
-        document.getElementById(e.target.id).removeAttribute("readonly");
-    }
-
-    disableTextField = (e) => {
-        document.getElementById(e.target.id).setAttribute("readonly", true);
-    }
-
     renderField = ({ input, label, type, id, meta: { touched, error }, ...props }) => (
         <React.Fragment>
             {/* {touched && error && <span>{error}</span>} */}

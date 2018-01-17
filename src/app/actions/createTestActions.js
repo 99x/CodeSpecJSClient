@@ -12,6 +12,17 @@ export function addScenario(scenarioDescription) {
     };
 }
 
+export function editScenario(scenarioId, value) {
+    return {
+        type: "EDIT_SCENARIO_DESCRIPTION",
+        payload: {
+            scenarioId: scenarioId,
+            value: value
+        }
+    };
+}
+
+
 export function addOption(option) {
     return {
         type: "ADD_OPTION",

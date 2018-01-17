@@ -29,6 +29,7 @@ const createTestReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case "ADD_FEATURE":
+            console.log("IN ADD FEATURE REDUCER")
             state = {
                 ...state,
                 feature: action.payload
@@ -156,7 +157,7 @@ const createTestReducer = (state = initialState, action) => {
         case "SCENARIO_DOWN": {
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload)
 
-            if (scenarioIndex !== (state.scenarios.length - 1)) {
+            if (scenarioIndex !== (state.scenarios.length - 1)) { //if not the last scenario
                 let scenario = state.scenarios[scenarioIndex]
                 let scenarioBelow = state.scenarios[scenarioIndex + 1]
 
@@ -178,8 +179,6 @@ const createTestReducer = (state = initialState, action) => {
                 let scenario = state.scenarios[scenarioIndex]
                 let scenarioAbove = state.scenarios[scenarioIndex - 1]
 
-                console.log("scenario up");
-                console.log(...state.scenarios.slice(0, (scenarioIndex - 1)))
 
                 state = {
                     ...state,
@@ -274,55 +273,73 @@ const createTestReducer = (state = initialState, action) => {
             break;
         }
 
-        case "DISABLE_INPUT": {
+        case "EDIT_SCENARIO_DESCRIPTION": {
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
-            let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId === action.payload.stepId)
-            let newStep = {
-                ...state.scenarios[scenarioIndex].steps[stepIndex],
-                disabled: true
-            }
 
             let newScenario = {
-                scenarioId: state.scenarios[scenarioIndex].scenarioId,
-                description: state.scenarios[scenarioIndex].description,
-                steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
-                    newStep,
-                ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
+                ...state.scenarios[scenarioIndex],
+                description: action.payload.value,
             }
 
             state = {
                 ...state,
-                scenarios: [...state.scenarios.slice(0, scenarioIndex),
+                scenarios: [...state.scenarios.slice(0, (scenarioIndex)),
                     newScenario,
-                ...state.scenarios.slice(scenarioIndex + 1)]
+                ...state.scenarios.slice(scenarioIndex + 1)
+                ]
             }
             break;
         }
 
-        case "ENABLE_INPUT": {
-            let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
-            let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId === action.payload.stepId)
-            let newStep = {
-                ...state.scenarios[scenarioIndex].steps[stepIndex],
-                disabled: false
-            }
+        // case "DISABLE_INPUT": {
+        //     let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
+        //     let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId === action.payload.stepId)
+        //     let newStep = {
+        //         ...state.scenarios[scenarioIndex].steps[stepIndex],
+        //         disabled: true
+        //     }
 
-            let newScenario = {
-                scenarioId: state.scenarios[scenarioIndex].scenarioId,
-                description: state.scenarios[scenarioIndex].description,
-                steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
-                    newStep,
-                ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
-            }
+        //     let newScenario = {
+        //         scenarioId: state.scenarios[scenarioIndex].scenarioId,
+        //         description: state.scenarios[scenarioIndex].description,
+        //         steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
+        //             newStep,
+        //         ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
+        //     }
 
-            state = {
-                ...state,
-                scenarios: [...state.scenarios.slice(0, scenarioIndex),
-                    newScenario,
-                ...state.scenarios.slice(scenarioIndex + 1)]
-            }
-            break;
-        }
+        //     state = {
+        //         ...state,
+        //         scenarios: [...state.scenarios.slice(0, scenarioIndex),
+        //             newScenario,
+        //         ...state.scenarios.slice(scenarioIndex + 1)]
+        //     }
+        //     break;
+        // }
+
+        // case "ENABLE_INPUT": {
+        //     let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
+        //     let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId === action.payload.stepId)
+        //     let newStep = {
+        //         ...state.scenarios[scenarioIndex].steps[stepIndex],
+        //         disabled: false
+        //     }
+
+        //     let newScenario = {
+        //         scenarioId: state.scenarios[scenarioIndex].scenarioId,
+        //         description: state.scenarios[scenarioIndex].description,
+        //         steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
+        //             newStep,
+        //         ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
+        //     }
+
+        //     state = {
+        //         ...state,
+        //         scenarios: [...state.scenarios.slice(0, scenarioIndex),
+        //             newScenario,
+        //         ...state.scenarios.slice(scenarioIndex + 1)]
+        //     }
+        //     break;
+        // }
 
         case "REMOVE_FEATURE": {
             state = {
