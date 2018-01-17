@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import '../../assets/css/App.css';
 import validateObjects from './validateObjects';
 import { If } from 'react-if';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 const required = value => (value ? "" : "required")
 
@@ -22,15 +24,14 @@ class CreateObject extends React.Component {
         </React.Fragment>
     );
 
+
     renderObjects = ({ fields, meta: { touched, error, submitFailed } }) => {
         console.log(touched, error, submitFailed);
         return (
 
             <ul>
-
                 <li>
                     <center>
-
                         <Button bsStyle="success" onClick={() => fields.push({})}>Add New Object</Button>
                         <If condition={error !== undefined} >
                             <Alert bsStyle="warning" className="set-alert-width">
@@ -90,11 +91,21 @@ class CreateObject extends React.Component {
         //this
     }
 
+    confirmDelete = (e) => {
+
+        confirmAlert({
+            title: 'Delete All?',
+            message: 'Are you sure you want to permanently delete everything?',
+            confirmLabel: 'Delete',
+            cancelLabel: 'Cancel',
+            onConfirm: () => { this.props.reset() },
+        })
+    };
+
+
     render() {
 
         const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
-        console.log("this.props")
-        console.log(invalid);
 
         return (
             <form onSubmit={handleSubmit(this.submit.bind(this))}>
@@ -102,7 +113,7 @@ class CreateObject extends React.Component {
                 <center>
                     <Button className="align-inline" type="submit" disabled={pristine || submitting || invalid}>Submit</Button>
                     <div className="divider" />
-                    <Button className="align-inline" disabled={pristine || submitting} onClick={reset}> Clear All Values </Button>
+                    <Button className="align-inline" disabled={pristine || submitting} onClick={this.confirmDelete.bind(this)}> Clear All Values </Button>
                 </center>
             </form>
         );
