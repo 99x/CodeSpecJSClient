@@ -26,9 +26,9 @@ class CreateObject extends React.Component {
 
 
     renderObjects = ({ fields, meta: { touched, error, submitFailed } }) => {
+
         console.log(touched, error, submitFailed);
         return (
-
             <ul>
                 <li>
                     <center>
@@ -87,12 +87,30 @@ class CreateObject extends React.Component {
         );
     }
 
-    submit() {
-        //this
+    getUsername() {
+        let url = window.location.search;
+        let urlParam = url.substring(url.indexOf('?') + 1);
+        let matches = urlParam.match(/=(.+)/);
+        let username;
+        if (matches) {
+            username = matches[1];
+        } else {
+            username = 'guestuser' //not logged in
+        }
+        return username;
+    }
+
+    submit(e) {
+        localStorage.setItem(this.getUsername(), JSON.stringify(e))
+        confirmAlert({
+            title: 'Saved',
+            message: 'Successfully saved all your objects!',
+            confirmLabel: 'OK',
+            cancelLabel: ''
+        })
     }
 
     confirmDelete = (e) => {
-
         confirmAlert({
             title: 'Delete All?',
             message: 'Are you sure you want to permanently delete everything?',
@@ -102,10 +120,18 @@ class CreateObject extends React.Component {
         })
     };
 
+    componentDidMount() {
+        this.initializeForm();
+    }
+
+    initializeForm() {
+        const cachedObjects = JSON.parse(localStorage.getItem(this.getUsername()))
+        this.props.initialize(cachedObjects);
+    }
 
     render() {
 
-        const { handleSubmit, pristine, reset, submitting, invalid } = this.props;
+        const { handleSubmit, pristine, reset, submitting, invalid, fields } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.submit.bind(this))}>
