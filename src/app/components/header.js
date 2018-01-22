@@ -7,8 +7,8 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            create: true,
-            view: false,
+            create: false,
+            view: true,
             repo: false
         };
     }

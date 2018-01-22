@@ -351,6 +351,11 @@ const createTestReducer = (state = initialState, action) => {
             break;
         }
 
+        case "INITIALIZE_FORM": {
+            state = action.payload;
+            break;
+        }
+
     }
     return state;
 };

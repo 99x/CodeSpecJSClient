@@ -101,7 +101,22 @@ class CreateObject extends React.Component {
     }
 
     submit(e) {
-        localStorage.setItem(this.getUsername(), JSON.stringify(e))
+        let storedEntry = JSON.parse(localStorage.getItem(this.getUsername()))
+
+        let newObject;
+        if (this.getUsername() in localStorage) {
+            console.log("TEST IS DEFINED")
+            newObject = {
+                test: storedEntry.test,
+                repo: e
+            }
+        } else {
+            newObject = {
+                repo: e
+            }
+        }
+
+        localStorage.setItem(this.getUsername(), JSON.stringify(newObject))
         confirmAlert({
             title: 'Saved',
             message: 'Successfully saved all your objects!',
@@ -125,8 +140,12 @@ class CreateObject extends React.Component {
     }
 
     initializeForm() {
-        const cachedObjects = JSON.parse(localStorage.getItem(this.getUsername()))
-        this.props.initialize(cachedObjects);
+        if (this.getUsername() in localStorage) {
+            const cachedObjects = JSON.parse(localStorage.getItem(this.getUsername()))
+            console.log(cachedObjects.repo)
+            this.props.initialize(cachedObjects.repo);
+        }
+
     }
 
     render() {

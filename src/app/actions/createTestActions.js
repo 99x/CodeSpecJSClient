@@ -129,3 +129,10 @@ export function removeFeature() {
         payload: {}
     };
 }
+
+export function initializeForm(cachedEntry) {
+    return {
+        type: "INITIALIZE_FORM",
+        payload: cachedEntry
+    }
+}

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 
-import DisplayCode from '../containers/displayCode';
 import CreateTest from '../containers/createTest';
 import CreateObject from './../containers/createObject';
-
-
-
+import EditTest from './../containers/editTest';
+import ShowTest from './../containers/showTests';
 
 class Body extends Component {
     render() {
@@ -14,13 +12,7 @@ class Body extends Component {
         if (this.props.showView) {
             content = (
                 <div>
-                    <div className="col-sm-10 col-sm-offset-2 Mainbutton">
-                        <Panel>
-                            <div id="myPanel">
-                                <p>You do not have any Test Suites currently</p>
-                            </div>
-                        </Panel>
-                    </div>
+                    <ShowTest />
                 </div>
             );
         } else if (this.props.showCreate) {
@@ -28,7 +20,7 @@ class Body extends Component {
                 <div>
                     <CreateTest />
                     <br />
-                    <DisplayCode />
+                    <EditTest />
                 </div>
             );
         } else if (this.props.showRepo) {

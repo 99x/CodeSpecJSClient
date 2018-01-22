@@ -5,82 +5,136 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-import { addFeature, addScenario, addStep, addOption } from '../actions/createTestActions';
+import { removeFeature, initializeForm, addFeature, addScenario, addStep, addOption } from '../actions/createTestActions';
 
 class CreateTest extends Component {
+
+
+    handleSubmit = (event) => {
+        const username = this.getUsername();
+        const stored = JSON.parse(localStorage.getItem(username));
+
+        let newObject = {};
+        if ('repo' in stored) {
+            newObject = {
+                repo: stored.repo
+            }
+        }
+        let testsArr = []
+        if ('test' in stored) { //alreasy test suites exist
+            testsArr = stored.test
+            let testIndex = stored.test.findIndex(test => test.feature === this.props.create.feature)
+            if (testIndex !== (-1)) { //this test suite exits already and now being modified
+                testsArr.splice(testIndex, 1) //remove existing
+            }
+        }
+
+        testsArr.push(this.props.create)
+        newObject['test'] = testsArr
+        localStorage.setItem(username, JSON.stringify(newObject))
+        event.preventDefault();
+    }
+
+    getUsername() {
+        let url = window.location.search;
+        let urlParam = url.substring(url.indexOf('?') + 1);
+        let matches = urlParam.match(/=(.+)/);
+        let username;
+        if (matches) {
+            username = matches[1];
+        } else {
+            username = 'guestuser' //not logged in
+        }
+        return username;
+    }
+
+    // componentDidMount() {
+    //     if (this.getUsername() in localStorage) {
+    //         const cachedObjects = JSON.parse(localStorage.getItem(this.getUsername()))
+    //         if ('test' in cachedObjects) {
+    //             console.log(cachedObjects.test)
+    //             this.props.initializeForm(cachedObjects.test)
+    //         }
+    //     }
+    // }
+
     render() {
         return (
             <div>
-                <br />
-                <div className="form">
 
-                    <div className="container">
-                        <FormControl componentClass="input" className="form-control" placeholder="Enter Test Suite Description" inputRef={(ref) => { this.input = ref }} />
-                        <div className="divider" />
-                        <Button bsStyle="primary" onClick={() => this.props.addFeature(this.input.value)}>Add Test Suite</Button>
-                    </div>
-
+                <form className="form" onSubmit={this.handleSubmit}>
+                    <center> <Button type="submit" bsStyle="primary" value="Submit" >Save Test</Button> </center>
                     <br />
+                    <div >
 
-                    <div className="container">
-                        <FormControl componentClass="input" className="form-control" placeholder="Enter Test Case Description" inputRef={(ref2) => { this.input2 = ref2 }} />
-                        <div className="divider" />
-                        <Button bsStyle="primary" onClick={() => this.props.addScenario(this.input2.value)}>Add Test Case</Button>
-                    </div>
-
-                    <br />
-
-                    <div className="container">
-                        <FormControl id="input-field" componentClass="select">
-                            <option value="given">Given</option>
-                            <option value="when">When</option>
-                            <option value="then">Then</option>
-                            <option value="and">And</option>
-                            <option value="but">But</option>
-                        </FormControl>
-
-                        <div className="divider" />
-
-                        <div id="drop-down-set-width">
-                            <Select id="dropdown" value={this.props.create.selectedOption.value} onChange={this.props.addOption}
-                                options={[
-                                    { value: 'navigate', label: 'Navigate to <URL>' },
-                                    { value: 'enter', label: 'I enter <InputValue> to the <ElementKey>' },
-                                    { value: 'click', label: 'Click on <ElementKey>' },
-                                    { value: 'contentHasText', label: 'The content of <ElementKey> has text <ExpectedText>' },
-                                    { value: 'elementContainsText', label: 'Element <ElementKey> contains text <ExpectedText>' },
-                                    { value: 'waitToAppear', label: 'Wait for <ElementKey> to appear' },
-                                    { value: 'waitToContainText', label: 'Wait for <ElementKey> to contain text <ExpectedText>' },
-                                    { value: 'waitForSeconds', label: 'Wait for <Seconds> seconds' },
-                                    { value: 'switchFrame', label: 'Switch to main frame' },
-                                    { value: 'switchIFrame', label: 'Switch to iframe <ElementKey>' },
-                                    { value: 'switchPopup', label: 'Switch to popup window <Window/TabIndex>' },
-                                    { value: 'selectValue', label: 'Select value <Value> from <ElementKey>' },
-                                    { value: 'acceptAlert', label: 'Accept the confirmation alert' },
-                                    { value: 'alertSays', label: 'The alert message says <ExpectedText>' },
-                                    { value: 'dismissDialog', label: 'I Dismiss the confirm dialog' },
-                                    { value: 'acceptDialog', label: 'I Accept the confirm dialog' },
-                                    { value: 'enterIntoPrompt', label: 'I enter <InputText> into prompt' },
-                                    { value: 'dragAndDrop', label: 'I drag <DragableElementKey> and drop on to <DroppableElementKey>' },
-                                    { value: 'iRead', label: 'I read the content of element <ElementKey> and store in variable <VariableKey> as a <VariableType>' },
-                                    { value: 'iStore', label: 'I store the value <Value> in variable <VariableKey> as a <VariableType>' },
-                                    { value: 'equals', label: 'The value in variable <Variablekey> of type <VariableType> equals to <Value>' },
-                                    { value: 'add', label: 'I Add variable <Variablekey> to <Variablekey> and store in <Variablekey>' },
-                                    { value: 'substract', label: 'I Subtract variable <Variablekey1> from <Variablekey2> and store in <Variablekey3>' },
-                                    { value: 'multiply', label: 'I Multiply variable <Variablekey1> from <Variablekey2> and store in <Variablekey3>' },
-                                    { value: 'divide', label: 'I Divide variable <Variablekey1> from <Variablekey2> and store in <Variablekey3>' },
-                                    { value: 'populate', label: 'I populate <ElementKey> with the value of variable <VariableKey> of type <VariableType>' },
-                                    { value: 'upload', label: 'I Upload <FilePath> to <ElementKey>' },
-                                    { value: 'clickWhenActive', label: 'Click on <ElementKey> when active' },
-                                    { value: 'switchMainFrame', label: 'Switch to main frame' },
-                                ]}
-                            />
+                        <div className="container">
+                            <FormControl componentClass="input" className="form-control" placeholder="Enter Test Suite Description" inputRef={(ref) => { this.input = ref }} />
+                            <div className="divider" />
+                            <Button bsStyle="primary" onClick={() => this.props.addFeature(this.input.value)}>Add Test Suite</Button>
                         </div>
-                        <div className="divider" />
 
-                        <Button type="submit" bsStyle="success" id="submitButton" onClick={this.props.addStep.bind(this)}>Build Grammer </Button>
+                        <br />
+
+                        <div className="container">
+                            <FormControl componentClass="input" className="form-control" placeholder="Enter Test Case Description" inputRef={(ref2) => { this.input2 = ref2 }} />
+                            <div className="divider" />
+                            <Button bsStyle="primary" onClick={() => this.props.addScenario(this.input2.value)}>Add Test Case</Button>
+                        </div>
+
+                        <br />
+
+                        <div className="container">
+                            <FormControl id="input-field" componentClass="select">
+                                <option value="given">Given</option>
+                                <option value="when">When</option>
+                                <option value="then">Then</option>
+                                <option value="and">And</option>
+                                <option value="but">But</option>
+                            </FormControl>
+
+                            <div className="divider" />
+
+                            <div id="drop-down-set-width">
+                                <Select id="dropdown" value={this.props.create.selectedOption.value} onChange={this.props.addOption}
+                                    options={[
+                                        { value: 'navigate', label: 'Navigate to <URL>' },
+                                        { value: 'enter', label: 'I enter <InputValue> to the <ElementKey>' },
+                                        { value: 'click', label: 'Click on <ElementKey>' },
+                                        { value: 'contentHasText', label: 'The content of <ElementKey> has text <ExpectedText>' },
+                                        { value: 'elementContainsText', label: 'Element <ElementKey> contains text <ExpectedText>' },
+                                        { value: 'waitToAppear', label: 'Wait for <ElementKey> to appear' },
+                                        { value: 'waitToContainText', label: 'Wait for <ElementKey> to contain text <ExpectedText>' },
+                                        { value: 'waitForSeconds', label: 'Wait for <Seconds> seconds' },
+                                        { value: 'switchFrame', label: 'Switch to main frame' },
+                                        { value: 'switchIFrame', label: 'Switch to iframe <ElementKey>' },
+                                        { value: 'switchPopup', label: 'Switch to popup window <Window/TabIndex>' },
+                                        { value: 'selectValue', label: 'Select value <Value> from <ElementKey>' },
+                                        { value: 'acceptAlert', label: 'Accept the confirmation alert' },
+                                        { value: 'alertSays', label: 'The alert message says <ExpectedText>' },
+                                        { value: 'dismissDialog', label: 'I Dismiss the confirm dialog' },
+                                        { value: 'acceptDialog', label: 'I Accept the confirm dialog' },
+                                        { value: 'enterIntoPrompt', label: 'I enter <InputText> into prompt' },
+                                        { value: 'dragAndDrop', label: 'I drag <DragableElementKey> and drop on to <DroppableElementKey>' },
+                                        { value: 'iRead', label: 'I read the content of element <ElementKey> and store in variable <VariableKey> as a <VariableType>' },
+                                        { value: 'iStore', label: 'I store the value <Value> in variable <VariableKey> as a <VariableType>' },
+                                        { value: 'equals', label: 'The value in variable <Variablekey> of type <VariableType> equals to <Value>' },
+                                        { value: 'add', label: 'I Add variable <Variablekey> to <Variablekey> and store in <Variablekey>' },
+                                        { value: 'substract', label: 'I Subtract variable <Variablekey1> from <Variablekey2> and store in <Variablekey3>' },
+                                        { value: 'multiply', label: 'I Multiply variable <Variablekey1> from <Variablekey2> and store in <Variablekey3>' },
+                                        { value: 'divide', label: 'I Divide variable <Variablekey1> from <Variablekey2> and store in <Variablekey3>' },
+                                        { value: 'populate', label: 'I populate <ElementKey> with the value of variable <VariableKey> of type <VariableType>' },
+                                        { value: 'upload', label: 'I Upload <FilePath> to <ElementKey>' },
+                                        { value: 'clickWhenActive', label: 'Click on <ElementKey> when active' },
+                                        { value: 'switchMainFrame', label: 'Switch to main frame' },
+                                    ]}
+                                />
+                            </div>
+                            <div className="divider" />
+
+                            <Button bsStyle="success" id="submitButton" onClick={this.props.addStep.bind(this)}>Build Grammer </Button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         );
     }
@@ -106,6 +160,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         addOption: (option) => {
             dispatch(addOption(option))
+        },
+        initializeForm: (cachedEntry) => {
+            dispatch(initializeForm(cachedEntry))
         }
     };
 };
