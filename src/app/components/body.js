@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button, Panel } from 'react-bootstrap';
 
 import CreateTest from '../containers/createTest';
 import CreateObject from './../containers/createObject';
@@ -26,6 +25,12 @@ class Body extends Component {
         } else if (this.props.showRepo) {
             content = (
                 <CreateObject />
+            );
+        } else if (this.props.showDashboard) {
+            content = (
+                <div>
+                    <p>page coming soon</p>
+                </div>
             );
         }
         return content;
