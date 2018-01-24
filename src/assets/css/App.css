@@ -163,6 +163,15 @@ ul {
     text-align: left;
 }
 
+.test__align--right {
+    float: right;
+}
+
+.displayTest__padding {
+    padding: 10px 10px 10px 10px;
+    cursor: pointer;
+}
+
 
 /* .icon-size {
     padding-top: 5px;
