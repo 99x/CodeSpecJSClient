@@ -7,16 +7,16 @@ import mySaga from './app/sagas/index'
 
 
 //create saga middleware
-const sagaMiddleware = createSagaMiddleware()
+// const sagaMiddleware = createSagaMiddleware()
 
 //mount middlewares on the store
 const store = createStore(
     allReducers,
     {},
-    applyMiddleware(logger, sagaMiddleware)
+    applyMiddleware(logger)
 );
 
 //run the saga
-sagaMiddleware.run(mySaga)
+// sagaMiddleware.run(mySaga)
 
 export default store

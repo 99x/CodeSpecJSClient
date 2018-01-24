@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Header from './app/components/header';
+// import Login from './app/components/login';
 import './index.css';
 
 import { Provider } from 'react-redux';

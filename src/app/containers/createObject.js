@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Button, FormControl, Alert } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import '../../assets/css/App.css';
 import validateObjects from './validateObjects';
 import { If } from 'react-if';
@@ -150,7 +149,7 @@ class CreateObject extends React.Component {
 
     render() {
 
-        const { handleSubmit, pristine, reset, submitting, invalid, fields } = this.props;
+        const { handleSubmit, pristine, submitting, invalid } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.submit.bind(this))}>

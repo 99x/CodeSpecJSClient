@@ -4,11 +4,12 @@ import { Button, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import { confirmAlert } from 'react-confirm-alert'; // Import
 
-import { removeFeature, initializeForm, addFeature, addScenario, addStep, addOption } from '../actions/createTestActions';
+import { initializeForm, addFeature, addScenario, addStep, addOption } from '../actions/createTestActions';
+import { removeFeature } from './../actions/createTestActions';
 
 class CreateTest extends Component {
-
 
     handleSubmit = (event) => {
         const username = this.getUsername();
@@ -32,6 +33,13 @@ class CreateTest extends Component {
         testsArr.push(this.props.create)
         newObject['test'] = testsArr
         localStorage.setItem(username, JSON.stringify(newObject))
+
+        confirmAlert({
+            title: 'Saved',
+            message: 'Successfully saved test!',
+            confirmLabel: 'OK',
+            cancelLabel: ''
+        })
         event.preventDefault();
     }
 
@@ -61,9 +69,12 @@ class CreateTest extends Component {
     render() {
         return (
             <div>
-
                 <form className="form" onSubmit={this.handleSubmit}>
-                    <center> <Button type="submit" bsStyle="primary" value="Submit" >Save Test</Button> </center>
+                    <center>
+                        <Button bsStyle="default" onClick={this.props.removeFeature.bind(this)}>Create New</Button>
+                        <div className="divider" />
+                        <Button type="submit" bsStyle="primary" value="Submit" >Save Test</Button>
+                    </center>
                     <br />
                     <div >
 
@@ -163,6 +174,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         initializeForm: (cachedEntry) => {
             dispatch(initializeForm(cachedEntry))
+        },
+        removeFeature: () => {
+            dispatch(removeFeature());
         }
     };
 };
