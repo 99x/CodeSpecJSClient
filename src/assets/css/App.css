@@ -52,7 +52,10 @@
 
 .container {
     display: flex;
-    /* max-width: 70%; */
+}
+
+#obj_container {
+    flex: auto;
 }
 
 #input-field {
@@ -65,6 +68,14 @@
 
 #drop-down-set-width {
     width: 80%;
+}
+
+#object__dropdown--width {
+    min-width: 300px;
+}
+
+#setmargin__left {
+    margin-left: 50%;
 }
 
 .form {
@@ -231,6 +242,10 @@ ul.dropdown-menu {
     max-width: 20%;
 }
 
+.Object__float--right {
+    float: right;
+}
+
 .error {
     border: 1.5px solid rgba(255, 5, 5, 0.384);
     /* background-color: #f0d3d3; */
@@ -239,6 +254,10 @@ ul.dropdown-menu {
 .set-alert-width {
     width: 60%;
     margin-top: 15px;
+}
+
+.well__size {
+    max-width: 70%;
 }
 
 
