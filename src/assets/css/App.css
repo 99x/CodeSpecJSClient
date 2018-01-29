@@ -70,6 +70,10 @@
     width: 80%;
 }
 
+#dropdown-width {
+    min-width: 200px !important;
+}
+
 #object__dropdown--width {
     min-width: 300px;
 }
@@ -85,6 +89,10 @@
 .Dropdowns {
     padding: 25px;
     text-align: center;
+}
+
+.Select-clear-zone {
+    display: none !important;
 }
 
 .divider {
@@ -254,6 +262,7 @@ ul.dropdown-menu {
 .set-alert-width {
     width: 60%;
     margin-top: 15px;
+    background-color: #f9efbe;
 }
 
 .well__size {

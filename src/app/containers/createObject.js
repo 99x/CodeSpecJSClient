@@ -12,18 +12,52 @@ import 'react-select/dist/react-select.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-const required = value => (value ? "" : "required")
+const required = value => {
+    console.log('validation shit')
+    console.log(value)
+    return (value ? "" : "required")
+}
 
 class CreateObject extends React.Component {
 
-    renderField = ({ input, label, type, id, meta: { touched, error }, ...props }) => (
-        <React.Fragment>
-            {/* {touched && error && <span>{error}</span>} */}
-            <FormControl className={`align-inline object-field-length ${(touched && error) ? 'error' : ''}`}
-                {...input} type={type} placeholder={label} id={id}
-            />
-        </React.Fragment>
-    );
+    renderField = ({ input, label, type, id, meta: { touched, error }, ...props }) => {
+        console.log('RENDER FIELD ERROR')
+        console.log({ error })
+        console.log({ id })
+        console.log({ input })
+        return (
+            <React.Fragment>
+                {/* {touched && error && <span>{error}</span>} */}
+                <FormControl className={`align-inline object-field-length ${(touched && error) ? 'error' : ''}`}
+                    {...input} type={type} placeholder={label} id={id}
+                />
+            </React.Fragment>
+        );
+    }
+
+
+    renderDropDown = ({ input, label, type, id, meta: { touched, error }, ...props }) => {
+        const handleBlur = e => e.preventDefault();
+        const options = [
+            { value: 'id', label: 'Id' },
+            { value: 'css', label: 'Css' },
+            { value: 'xpath', label: 'Xpath' },
+            { value: 'model', label: 'Model' },
+            { value: 'binding', label: 'Binding' }
+        ]
+        return (
+            <React.Fragment>
+                <Select {...input}
+                    id="dropdown-width"
+                    value={input.value.value ? input.value.value : "id"}
+                    options={options}
+                    onChange={input.onChange}
+                    onBlur={handleBlur}
+                    autosize={false}
+                />
+            </React.Fragment>
+        )
+    }
 
     renderObjects = ({ fields, meta: { touched, error, submitFailed } }) => {
         return (
@@ -51,7 +85,8 @@ class CreateObject extends React.Component {
                 {fields.map((object, index) => (
                     <li key={index}>
                         <br />
-                        <center>
+
+                        <div className="container">
                             <Field
                                 name={`${object}.key`}
                                 type='text'
@@ -64,9 +99,8 @@ class CreateObject extends React.Component {
                             <Field
                                 name={`${object}.method`}
                                 type='text'
-                                component={this.renderField}
+                                component={this.renderDropDown}
                                 label="Method"
-                                validate={required}
                                 id={`${object}.key` + `${object}.method`}
                             />
 
@@ -86,8 +120,8 @@ class CreateObject extends React.Component {
                                 onClick={() => fields.remove(index)}
                                 className="allIcons mdi mdi-delete-forever"
                             />
+                        </div>
 
-                        </center>
                     </li>
                 )
 
@@ -170,7 +204,7 @@ class CreateObject extends React.Component {
                     localStorage.setItem(username, JSON.stringify(newObject))
                 }
                 /* remove from state */
-                this.props.reset();
+                this.initializeForm()
             } catch (err) {
                 console.log('In err')
                 throw new Error('Unable to delete repo', err.message)
@@ -179,15 +213,34 @@ class CreateObject extends React.Component {
 
     };
 
-    initializeForm(repo) {
+    editThisRepo = (e) => {
         try {
+            let username = this.getUsername()
+            let cachedEntry = JSON.parse(localStorage.getItem(username))
+            let repoIndex = cachedEntry.repo.findIndex(repo => repo.repoName === this.props.form.ObjectRepo.values.editRepo.value)
+            this.initializeForm(e, cachedEntry.repo[repoIndex]);
+        } catch (err) {
+            throw new Error('Unable to get repo for edit' + err.message);
+        }
+    }
+
+    initializeForm(event, repo) {
+        try {
+            if (typeof repo === undefined) {
+                console.log('repo is undefined')
+                var repo = {
+                    objects: [],
+                    repoName: ''
+                }
+            }
+            this.props.destroy();
             this.props.initialize(repo);
         } catch (err) {
             throw new Error('Unable initialize form' + err.message);
         }
     }
 
-    renderDropdown = ({ input, onBlur, id, meta: { touched, error }, ...props }) => {
+    renderRepoDropdown = ({ input, onBlur, id, meta: { touched, error }, ...props }) => {
         try {
             const username = this.getUsername();
             const allRepos = []
@@ -222,31 +275,22 @@ class CreateObject extends React.Component {
 
     };
 
-    editThisRepo = (e) => {
-        try {
-            let username = this.getUsername()
-            let cachedEntry = JSON.parse(localStorage.getItem(username))
-            let repoIndex = cachedEntry.repo.findIndex(repo => repo.repoName === this.props.form.ObjectRepo.values.editRepo.value)
-            this.initializeForm(cachedEntry.repo[repoIndex]);
-        } catch (err) {
-            throw new Error('Unable to get repo for edit' + err.message);
-        }
-    }
+
 
     render() {
         console.log('RENDER')
         const { handleSubmit, pristine, submitting, invalid, reset } = this.props;
+
         return (
             <div id="obj_container">
                 <div className="container">
                     <Field name="editRepo"
-                        value="this.state.accountno"
-                        component={this.renderDropdown}
-                        placeholder="Select"
+
+                        component={this.renderRepoDropdown}
                     />
                     <div className="divider" />
-                    <Button bsStyle="primary" disabled={pristine || submitting} onClick={this.editThisRepo.bind(this)}>Edit Repo</Button>
-                    <Button id="setmargin__left" bsStyle="success" disabled={pristine || submitting || invalid} onClick={reset}>Create New Repo</Button>
+                    <Button bsStyle="primary" onClick={this.editThisRepo.bind(this)}>Edit Repo</Button>
+                    <Button id="setmargin__left" bsStyle="success" onClick={this.initializeForm.bind(this)}>Create New Repo</Button>
                 </div>
 
                 <br />
