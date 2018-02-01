@@ -52,14 +52,26 @@
 
 .container {
     display: flex;
+    /* justify-content: center; */
 }
 
 #obj_container {
     flex: auto;
 }
 
+.flex-container {
+    display: flex;
+    align-items: stretch;
+}
+
 #input-field {
     max-width: 100px;
+}
+
+.dropdown_customized {
+    max-width: 200px !important;
+    border: none !important;
+    background-color: transparent !important;
 }
 
 #dropdown {
@@ -231,10 +243,6 @@ ul.dropdown-menu {
     right: 100%;
     left: unset;
     margin-top: 0px;
-}
-
-.align-right {
-    float: right;
 }
 
 .align-center {

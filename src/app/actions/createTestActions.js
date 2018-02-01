@@ -30,6 +30,16 @@ export function addOption(option) {
     };
 }
 
+export function addRepo(repoNames, username) {
+    return {
+        type: "ADD_REPO",
+        payload: {
+            repoNames: repoNames,
+            username: username
+        }
+    };
+}
+
 export function addStep(type) {
     return {
         type: "ADD_STEP",

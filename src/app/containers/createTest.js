@@ -4,43 +4,49 @@ import { Button, FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import { confirmAlert } from 'react-confirm-alert'; // Import
+import { confirmAlert } from 'react-confirm-alert';
+import { Multiselect } from 'react-widgets';
+import 'react-widgets/dist/css/react-widgets.css'
 
-import { initializeForm, addFeature, addScenario, addStep, addOption } from '../actions/createTestActions';
+import { initializeForm, addFeature, addScenario, addStep, addOption, addRepo } from '../actions/createTestActions';
 import { removeFeature } from './../actions/createTestActions';
 
 class CreateTest extends Component {
 
     handleSubmit = (event) => {
-        const username = this.getUsername();
-        const stored = JSON.parse(localStorage.getItem(username));
+        try {
+            const username = this.getUsername();
+            const stored = JSON.parse(localStorage.getItem(username));
 
-        let newObject = {};
-        if ('repo' in stored) {
-            newObject = {
-                repo: stored.repo
+            let newObject = {};
+            if ('repo' in stored) {
+                newObject = {
+                    repo: stored.repo
+                }
             }
-        }
-        let testsArr = []
-        if ('test' in stored) { //alreasy test suites exist
-            testsArr = stored.test
-            let testIndex = stored.test.findIndex(test => test.feature === this.props.create.feature)
-            if (testIndex !== (-1)) { //this test suite exits already and now being modified
-                testsArr.splice(testIndex, 1) //remove existing
+            let testsArr = []
+            if ('test' in stored) { //alreasy test suites exist
+                testsArr = stored.test
+                let testIndex = stored.test.findIndex(test => test.feature === this.props.create.feature)
+                if (testIndex !== (-1)) { //this test suite exits already and now being modified
+                    testsArr.splice(testIndex, 1) //remove existing
+                }
             }
+
+            testsArr.push(this.props.create)
+            newObject['test'] = testsArr
+            localStorage.setItem(username, JSON.stringify(newObject))
+
+            confirmAlert({
+                title: 'Saved',
+                message: 'Successfully saved test!',
+                confirmLabel: 'OK',
+                cancelLabel: ''
+            })
+            event.preventDefault();
+        } catch (error) {
+            console.log('Submit Failed: ' + error.message)
         }
-
-        testsArr.push(this.props.create)
-        newObject['test'] = testsArr
-        localStorage.setItem(username, JSON.stringify(newObject))
-
-        confirmAlert({
-            title: 'Saved',
-            message: 'Successfully saved test!',
-            confirmLabel: 'OK',
-            cancelLabel: ''
-        })
-        event.preventDefault();
     }
 
     getUsername() {
@@ -56,15 +62,24 @@ class CreateTest extends Component {
         return username;
     }
 
-    // componentDidMount() {
-    //     if (this.getUsername() in localStorage) {
-    //         const cachedObjects = JSON.parse(localStorage.getItem(this.getUsername()))
-    //         if ('test' in cachedObjects) {
-    //             console.log(cachedObjects.test)
-    //             this.props.initializeForm(cachedObjects.test)
-    //         }
-    //     }
-    // }
+    getRepos() {
+        try {
+            let username = this.getUsername();
+            let repoNames = [];
+
+            if (username in localStorage) {
+                const cachedRepos = JSON.parse(localStorage.getItem(username))
+                if ('repo' in cachedRepos) {
+                    for (var repo of cachedRepos.repo) {
+                        repoNames.push(repo.repoName)
+                    }
+                }
+            }
+            return repoNames;
+        } catch (error) {
+            console.log('Unable to retrieve repo names: ' + error.message)
+        }
+    }
 
     render() {
         return (
@@ -77,6 +92,18 @@ class CreateTest extends Component {
                     </center>
                     <br />
                     <div >
+
+                        <div className="container">
+                            <Multiselect
+                                data={this.getRepos()}
+                                placeholder='Select repository'
+                                filter='contains'
+                                textField='name'
+                                onChange={this.props.addRepo.bind(this, this.getUsername())}
+                            />
+                        </div>
+
+                        <br />
 
                         <div className="container">
                             <FormControl componentClass="input" className="form-control" placeholder="Enter Test Suite Description" inputRef={(ref) => { this.input = ref }} />
@@ -168,6 +195,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         addStep: (steps) => {
             let type = document.getElementById('input-field').options[document.getElementById('input-field').selectedIndex].text;
             dispatch(addStep(type));
+        },
+        addRepo: (username, repoNames) => {
+            dispatch(addRepo(repoNames, username));
         },
         addOption: (option) => {
             dispatch(addOption(option))

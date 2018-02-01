@@ -2,8 +2,10 @@ import React from 'react';
 import { Panel, DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { If } from 'react-if';
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Multiselect } from 'react-widgets';
+import 'react-widgets/dist/css/react-widgets.css'
 
 import { editScenario, addFeature, removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown, save, removeFeature } from '../actions/createTestActions';
 import '../../assets/css/App.css';
@@ -61,14 +63,29 @@ class EditTest extends React.Component {
                 let placeholder = strArr[i].substring(1, (strArr[i].length - 1));
                 let elementID = stepId + i.toString();
 
-                newArr.push(
-                    <input readOnly type="text" placeholder={strArr[i]} className='stepInputField' id={elementID}
-                        value={this.props.create.scenarios[scenarioIndex].steps[stepIndex][placeholder]}
-                        onChange={this.props.save.bind(this, scenarioIndex, stepIndex, placeholder)}
-                        onFocus={this.enableTextField.bind(this)}
-                        onBlur={this.disableTextField.bind(this)}
-                    />
-                );
+                // if placeholder === ElementKey then give the dropdown 
+                if (placeholder === 'ElementKey') {
+                    newArr.push(
+                        <Multiselect
+                            data={this.props.create.repos}
+                            textField='key'
+                            placeholder={placeholder}
+                            className=' dropdown_customized'
+                            onChange={this.props.save.bind(this, scenarioIndex, stepIndex, placeholder)}
+                            groupBy='name'
+                        />
+                    );
+
+                } else {
+                    newArr.push(
+                        <input readOnly type="text" placeholder={placeholder} className='stepInputField' id={elementID}
+                            value={this.props.create.scenarios[scenarioIndex].steps[stepIndex][placeholder]}
+                            onChange={this.props.save.bind(this, scenarioIndex, stepIndex, placeholder)}
+                            onFocus={this.enableTextField.bind(this)}
+                            onBlur={this.disableTextField.bind(this)}
+                        />
+                    );
+                }
 
             } else {
                 newArr.push(strArr[i]);
@@ -100,7 +117,7 @@ class EditTest extends React.Component {
                         </div>
 
 
-                        <div className="align-right">
+                        <div className="Object__float--right">
                             <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                 noCaret id="dropdown-no-caret">
                                 <MenuItem eventKey="1" onClick={this.editDescription.bind(this, item.scenarioId)}><span className="allIcons mdi mdi-pencil" /></MenuItem>
@@ -116,18 +133,22 @@ class EditTest extends React.Component {
                             item.steps.map((step) => {
                                 return (
                                     <li className="highlight-line" key={step.stepId} >
-                                        <span className="blueTag"> &emsp;&emsp; {step.stepOne} </span>
-                                        {this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)}
-                                        <div className="align-right">
-                                            <div className="align-right">
-                                                <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
-                                                    noCaret id="dropdown-no-caret">
-                                                    <MenuItem eventKey="2" onClick={this.confirmDelete.bind(this, "step", item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
-                                                    <MenuItem eventKey="3" onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
-                                                    <MenuItem eventKey="4" onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
-                                                </DropdownButton>
-                                            </div>
+                                        <div className="flex-container">
+                                            <span className="blueTag"> &emsp;&emsp; {step.stepOne} </span>
+                                            <div className="divider" />
+                                            {this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)}
                                         </div>
+
+                                        <div className="Object__float--right">
+                                            <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                                noCaret id="dropdown-no-caret">
+                                                <MenuItem eventKey="2" onClick={this.confirmDelete.bind(this, "step", item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                                <MenuItem eventKey="3" onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
+                                                <MenuItem eventKey="4" onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
+                                            </DropdownButton>
+                                        </div>
+
+
                                     </li>);
                             })
                         }
@@ -152,7 +173,7 @@ class EditTest extends React.Component {
                                 />
                             </div>
 
-                            <div className="align-right">
+                            <div className="Object__float--right">
                                 <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                     noCaret id="dropdown-no-caret">
                                     <MenuItem eventKey="1" onClick={this.editDescription.bind(this, "feature")}><span className="allIcons mdi mdi-pencil" /></MenuItem>
@@ -198,7 +219,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(stepUp(scenarioId, stepId));
         },
         save: (scenarioIndex, stepIndex, placeholder, event) => {
-            dispatch(save(scenarioIndex, stepIndex, placeholder, event.target.value));
+            if (placeholder !== 'ElementKey') {
+                var event = event.target.value
+            }
+            dispatch(save(scenarioIndex, stepIndex, placeholder, event));
         },
         removeFeature: () => {
             dispatch(removeFeature());

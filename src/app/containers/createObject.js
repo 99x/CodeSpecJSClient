@@ -12,19 +12,11 @@ import 'react-select/dist/react-select.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-const required = value => {
-    console.log('validation shit')
-    console.log(value)
-    return (value ? "" : "required")
-}
+const required = value => (value ? "" : "required")
 
 class CreateObject extends React.Component {
 
     renderField = ({ input, label, type, id, meta: { touched, error }, ...props }) => {
-        console.log('RENDER FIELD ERROR')
-        console.log({ error })
-        console.log({ id })
-        console.log({ input })
         return (
             <React.Fragment>
                 {/* {touched && error && <span>{error}</span>} */}
@@ -143,7 +135,7 @@ class CreateObject extends React.Component {
             }
             return username;
         } catch (err) {
-            throw new Error('Unable to get username' + err.message);
+            console.log('Unable to get username' + err.message);
         }
 
     }
@@ -206,8 +198,7 @@ class CreateObject extends React.Component {
                 /* remove from state */
                 this.initializeForm()
             } catch (err) {
-                console.log('In err')
-                throw new Error('Unable to delete repo', err.message)
+                console.log('Unable to delete repo: ' + err.message)
             }
         }
 
@@ -220,7 +211,7 @@ class CreateObject extends React.Component {
             let repoIndex = cachedEntry.repo.findIndex(repo => repo.repoName === this.props.form.ObjectRepo.values.editRepo.value)
             this.initializeForm(e, cachedEntry.repo[repoIndex]);
         } catch (err) {
-            throw new Error('Unable to get repo for edit' + err.message);
+            console.log('Unable to get repo for edit: ' + err.message)
         }
     }
 
@@ -236,7 +227,7 @@ class CreateObject extends React.Component {
             this.props.destroy();
             this.props.initialize(repo);
         } catch (err) {
-            throw new Error('Unable initialize form' + err.message);
+            console.log('Unable initialize form' + err.message);
         }
     }
 
@@ -270,7 +261,7 @@ class CreateObject extends React.Component {
                 </React.Fragment>
             )
         } catch (err) {
-            throw new Error('Unable to render dropdown' + err.message);
+            console.log('Unable to render dropdown' + err.message);
         }
 
     };
@@ -278,14 +269,12 @@ class CreateObject extends React.Component {
 
 
     render() {
-        console.log('RENDER')
         const { handleSubmit, pristine, submitting, invalid, reset } = this.props;
 
         return (
             <div id="obj_container">
-                <div className="container">
+                <div className="container ">
                     <Field name="editRepo"
-
                         component={this.renderRepoDropdown}
                     />
                     <div className="divider" />

@@ -3,6 +3,7 @@ import ShortUniqueId from 'short-unique-id';
 const initialState = {
     feature: '',
     scenarios: [],
+    repos: [],
     activeIndex: '',
     selectedOption: ''
 }
@@ -29,7 +30,6 @@ const createTestReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case "ADD_FEATURE":
-            console.log("IN ADD FEATURE REDUCER")
             state = {
                 ...state,
                 feature: action.payload
@@ -121,6 +121,38 @@ const createTestReducer = (state = initialState, action) => {
                 selectedOption: value
             }
             break;
+        }
+
+        case "ADD_REPO": {
+            try {
+                let storedEntry = JSON.parse(localStorage.getItem(action.payload.username))
+                let newRepos = []
+                for (var repo of storedEntry.repo) {
+                    //ignore if repo exists in state already - to be implemented
+                    let newObj = {}
+                    for (var i = 0; i < action.payload.repoNames.length; i++) {
+                        if (repo.repoName === action.payload.repoNames[i]) {
+                            for (var obj of repo.objects) {
+                                newObj = {
+                                    key: obj.key,
+                                    name: repo.repoName
+                                }
+                                newRepos.push(newObj)
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                state = {
+                    ...state,
+                    repos: newRepos
+                }
+            } catch (error) {
+                console.log('ERROR: ADD_REPO failed: ' + error.message)
+            } finally {
+                break;
+            }
         }
 
         case "REMOVE_SCENARIO": {
@@ -215,7 +247,6 @@ const createTestReducer = (state = initialState, action) => {
                         newScenario,
                     ...state.scenarios.slice(scenarioIndex + 1)]
                 }
-                console.log(state);
             }
             break;
         }
@@ -345,6 +376,7 @@ const createTestReducer = (state = initialState, action) => {
             state = {
                 feature: '',
                 scenarios: [],
+                repos: [],
                 activeIndex: '',
                 selectedOption: ''
             }
