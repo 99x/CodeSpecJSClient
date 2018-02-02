@@ -8,14 +8,14 @@ import { confirmAlert } from 'react-confirm-alert';
 import { Multiselect } from 'react-widgets';
 import 'react-widgets/dist/css/react-widgets.css'
 
-import { initializeForm, addFeature, addScenario, addStep, addOption, addRepo } from '../actions/createTestActions';
+import { addFeature, addScenario, addStep, addOption, addRepo } from '../actions/createTestActions';
 import { removeFeature } from './../actions/createTestActions';
 
 class CreateTest extends Component {
 
     handleSubmit = (event) => {
         try {
-            const username = this.getUsername();
+            const username = this.props.login.username;
             const stored = JSON.parse(localStorage.getItem(username));
 
             let newObject = {};
@@ -49,22 +49,9 @@ class CreateTest extends Component {
         }
     }
 
-    getUsername() {
-        let url = window.location.search;
-        let urlParam = url.substring(url.indexOf('?') + 1);
-        let matches = urlParam.match(/=(.+)/);
-        let username;
-        if (matches) {
-            username = matches[1];
-        } else {
-            username = 'guestuser' //not logged in
-        }
-        return username;
-    }
-
     getRepos() {
         try {
-            let username = this.getUsername();
+            let username = this.props.login.username
             let repoNames = [];
 
             if (username in localStorage) {
@@ -99,7 +86,8 @@ class CreateTest extends Component {
                                 placeholder='Select repository'
                                 filter='contains'
                                 textField='name'
-                                onChange={this.props.addRepo.bind(this, this.getUsername())}
+                                onChange={this.props.addRepo.bind(this, this.props.login.username)}
+                                defaultValue={this.props.create.repos}
                             />
                         </div>
 
@@ -180,7 +168,8 @@ class CreateTest extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        create: state.createTestReducer
+        create: state.createTestReducer,
+        login: state.login
     }
 }
 
@@ -201,9 +190,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         addOption: (option) => {
             dispatch(addOption(option))
-        },
-        initializeForm: (cachedEntry) => {
-            dispatch(initializeForm(cachedEntry))
         },
         removeFeature: () => {
             dispatch(removeFeature());

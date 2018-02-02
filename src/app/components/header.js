@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import '../../assets/css/App.css';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
 import Body from './body';
-import NavigationReducer from './../reducers/navigationReducer';
 import { viewDashboard, viewTests, createTest, objectRepo } from '../actions/navigationActions'
 
 class Header extends Component {

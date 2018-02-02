@@ -3,12 +3,13 @@ import CreateTestReducer from './createTestReducer';
 
 import { reducer as reduxFormReducer } from 'redux-form';
 import NavigationReducer from './navigationReducer';
-// import ShowTestsReducer from './showTestsReducer';
+import loginReducer from './loginReducer';
 
 const allReducers = combineReducers({
     form: reduxFormReducer,
     createTestReducer: CreateTestReducer,
-    navigation: NavigationReducer
+    navigation: NavigationReducer,
+    login: loginReducer
 });
 
 export default allReducers;

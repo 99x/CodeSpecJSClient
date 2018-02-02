@@ -16,7 +16,7 @@ class ShowTest extends Component {
     }
 
     deleteThisTest = (feature, e) => {
-        let username = this.getUsername();
+        let username = this.props.login.username
         let cachedEntry = JSON.parse(localStorage.getItem(username))
 
         let testIndex = cachedEntry.test.findIndex(test => test.feature === feature);
@@ -32,7 +32,7 @@ class ShowTest extends Component {
     }
 
     existingTests = () => {
-        let username = this.getUsername();
+        let username = this.props.login.username
         let cachedEntry = JSON.parse(localStorage.getItem(username))
         let test = "";
 
@@ -40,26 +40,25 @@ class ShowTest extends Component {
             if ('test' in cachedEntry) { //there are existing tests
                 test = cachedEntry.test.map((test, index) => {
                     return (
-                        <React.Fragment>
-                            <li className='highlight-line test__align--left displayTest__padding' key={test.feature} >
-                                <span className="allIcons mdi mdi-delete-forever test__align--right" onClick={this.deleteThisTest.bind(this, test.feature)} />
-                                <div onClick={this.editThisTest.bind(this, test)}>
-                                    <span className="blueTag"> Test Suite: </span>{test.feature}
-                                    <ul>
-                                        {
-                                            test.scenarios.map((scenario) => {
-                                                return (
-                                                    <li key={scenario.scenarioId}>
-                                                        &emsp;&emsp;<span className="orangeTag">Test Case: </span>{scenario.description}
-                                                    </li>
-                                                );
-                                            })
-                                        }
-                                    </ul>
-                                </div>
-                            </li>
+                        <li className='highlight-line test__align--left displayTest__padding' key={test.feature} >
+                            <span className="allIcons mdi mdi-delete-forever test__align--right" onClick={this.deleteThisTest.bind(this, test.feature)} />
+                            <div onClick={this.editThisTest.bind(this, test)}>
+                                <span className="blueTag"> Test Suite: </span>{test.feature}
+                                <ul>
+                                    {
+                                        test.scenarios.map((scenario) => {
+                                            return (
+                                                <li key={scenario.scenarioId}>
+                                                    &emsp;&emsp;<span className="orangeTag">Test Case: </span>{scenario.description}
+                                                </li>
+                                            );
+                                        })
+                                    }
+                                </ul>
+                            </div>
                             <br />
-                        </React.Fragment>
+                        </li>
+
                     );
                 })
             } else {
@@ -85,19 +84,6 @@ class ShowTest extends Component {
         return test;
     }
 
-    getUsername() {
-        let url = window.location.search;
-        let urlParam = url.substring(url.indexOf('?') + 1);
-        let matches = urlParam.match(/=(.+)/);
-        let username;
-        if (matches) {
-            username = matches[1];
-        } else {
-            username = 'guestuser' //not logged in
-        }
-        return username;
-    }
-
     render() {
         return (
             <div className="col-sm-10 col-sm-offset-2 Mainbutton">
@@ -116,7 +102,8 @@ class ShowTest extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        navigation: state.navigation
+        navigation: state.navigation,
+        login: state.login
     }
 }
 

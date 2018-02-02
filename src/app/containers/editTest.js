@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { If } from 'react-if';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Multiselect } from 'react-widgets';
+import { DropdownList } from 'react-widgets';
 import 'react-widgets/dist/css/react-widgets.css'
 
 import { editScenario, addFeature, removeScenario, removeStep, scenarioDown, scenarioUp, stepUp, stepDown, save, removeFeature } from '../actions/createTestActions';
@@ -66,13 +66,14 @@ class EditTest extends React.Component {
                 // if placeholder === ElementKey then give the dropdown 
                 if (placeholder === 'ElementKey') {
                     newArr.push(
-                        <Multiselect
+                        <DropdownList
                             data={this.props.create.repos}
                             textField='key'
                             placeholder={placeholder}
-                            className=' dropdown_customized'
+                            className='dropdown_customized'
                             onChange={this.props.save.bind(this, scenarioIndex, stepIndex, placeholder)}
                             groupBy='name'
+                            filter='contains'
                         />
                     );
 
@@ -137,18 +138,15 @@ class EditTest extends React.Component {
                                             <span className="blueTag"> &emsp;&emsp; {step.stepOne} </span>
                                             <div className="divider" />
                                             {this.displayInputBox(this, step.stepTwo, step.stepId, item.scenarioId)}
-                                        </div>
 
-                                        <div className="Object__float--right">
-                                            <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                            <div className="flex_item--end"></div>
+                                            <DropdownButton bsStyle="default" className="more-options Object__flex--end" title={<span className="allIcons mdi mdi-dots-vertical" />}
                                                 noCaret id="dropdown-no-caret">
                                                 <MenuItem eventKey="2" onClick={this.confirmDelete.bind(this, "step", item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-delete" /></MenuItem>
                                                 <MenuItem eventKey="3" onClick={this.props.stepUp.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-up-drop-circle-outline" /></MenuItem>
                                                 <MenuItem eventKey="4" onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
                                             </DropdownButton>
                                         </div>
-
-
                                     </li>);
                             })
                         }
@@ -220,7 +218,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         save: (scenarioIndex, stepIndex, placeholder, event) => {
             if (placeholder !== 'ElementKey') {
-                var event = event.target.value
+                event = event.target.value
             }
             dispatch(save(scenarioIndex, stepIndex, placeholder, event));
         },

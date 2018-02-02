@@ -19,7 +19,6 @@ class CreateObject extends React.Component {
     renderField = ({ input, label, type, id, meta: { touched, error }, ...props }) => {
         return (
             <React.Fragment>
-                {/* {touched && error && <span>{error}</span>} */}
                 <FormControl className={`align-inline object-field-length ${(touched && error) ? 'error' : ''}`}
                     {...input} type={type} placeholder={label} id={id}
                 />
@@ -54,7 +53,8 @@ class CreateObject extends React.Component {
     renderObjects = ({ fields, meta: { touched, error, submitFailed } }) => {
         return (
             <ul>
-                <li>
+
+                <li >
                     <center>
                         <Field
                             name='repoName'
@@ -78,7 +78,7 @@ class CreateObject extends React.Component {
                     <li key={index}>
                         <br />
 
-                        <div className="container">
+                        <div className="object_container">
                             <Field
                                 name={`${object}.key`}
                                 type='text'
@@ -93,7 +93,7 @@ class CreateObject extends React.Component {
                                 type='text'
                                 component={this.renderDropDown}
                                 label="Method"
-                                id={`${object}.key` + `${object}.method`}
+                                id={`${object}.key${object}.method`}
                             />
 
                             <div className="divider" />
@@ -103,14 +103,13 @@ class CreateObject extends React.Component {
                                 component={this.renderField}
                                 label="Value"
                                 validate={required}
-                                id={`${object}.key` + `${object}.value`}
+                                id={`${object}.key${object}.value`}
                             />
 
                             <div className="divider" />
                             <span
-                                className="align-inline"
                                 onClick={() => fields.remove(index)}
-                                className="allIcons mdi mdi-delete-forever"
+                                className="allIcons mdi mdi-delete-forever align-inline"
                             />
                         </div>
 
@@ -118,30 +117,13 @@ class CreateObject extends React.Component {
                 )
 
                 )}
+
             </ul>
         );
     }
 
-    getUsername() {
-        try {
-            let url = window.location.search;
-            let urlParam = url.substring(url.indexOf('?') + 1);
-            let matches = urlParam.match(/=(.+)/);
-            let username;
-            if (matches) {
-                username = matches[1];
-            } else {
-                username = 'guestuser' //not logged in
-            }
-            return username;
-        } catch (err) {
-            console.log('Unable to get username' + err.message);
-        }
-
-    }
-
     submit(data) {
-        let username = this.getUsername()
+        let username = this.props.login.username
         let storedEntry = JSON.parse(localStorage.getItem(username))
         let newObject = {};
 
@@ -183,7 +165,7 @@ class CreateObject extends React.Component {
         const deleteRepo = (e) => {
             try {
                 /* remove from local storage */
-                let username = this.getUsername()
+                let username = this.props.login.username
                 let storedEntry = JSON.parse(localStorage.getItem(username))
                 let repoIndex = storedEntry.repo.findIndex(repo => repo.repoName === this.props.form.ObjectRepo.values.repoName)
                 if (repoIndex !== (-1)) { // delete from localstorage only if its available
@@ -206,7 +188,7 @@ class CreateObject extends React.Component {
 
     editThisRepo = (e) => {
         try {
-            let username = this.getUsername()
+            let username = this.props.login.username
             let cachedEntry = JSON.parse(localStorage.getItem(username))
             let repoIndex = cachedEntry.repo.findIndex(repo => repo.repoName === this.props.form.ObjectRepo.values.editRepo.value)
             this.initializeForm(e, cachedEntry.repo[repoIndex]);
@@ -218,8 +200,7 @@ class CreateObject extends React.Component {
     initializeForm(event, repo) {
         try {
             if (typeof repo === undefined) {
-                console.log('repo is undefined')
-                var repo = {
+                repo = {
                     objects: [],
                     repoName: ''
                 }
@@ -233,7 +214,7 @@ class CreateObject extends React.Component {
 
     renderRepoDropdown = ({ input, onBlur, id, meta: { touched, error }, ...props }) => {
         try {
-            const username = this.getUsername();
+            const username = this.props.login.username
             const allRepos = []
 
             if (username in localStorage) {
@@ -269,11 +250,11 @@ class CreateObject extends React.Component {
 
 
     render() {
-        const { handleSubmit, pristine, submitting, invalid, reset } = this.props;
+        const { handleSubmit, pristine, submitting, invalid } = this.props;
 
         return (
-            <div id="obj_container">
-                <div className="container ">
+            <React.Fragment>
+                <div className="object_container">
                     <Field name="editRepo"
                         component={this.renderRepoDropdown}
                     />
@@ -293,14 +274,15 @@ class CreateObject extends React.Component {
                         </center>
                     </Well>
                 </form>
-            </div>
+            </React.Fragment>
         );
     }
 }
 
 const mapStateToProps = state => {
     return {
-        form: state.form
+        form: state.form,
+        login: state.login
     }
 }
 

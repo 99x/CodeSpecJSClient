@@ -1,19 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import Header from './app/components/header';
-// import Login from './app/components/login';
-import './index.css';
-
 import { Provider } from 'react-redux';
 import registerServiceWorker from './registerServiceWorker';
 
 import store from './store';
+import Login from './app/components/login';
+import './index.css';
+
 
 //render the app
 ReactDOM.render(
     <Provider store={store}>
-        <Header />
+        <Login />
     </Provider>
     , document.getElementById('root'));
 registerServiceWorker();

@@ -130,8 +130,8 @@ const createTestReducer = (state = initialState, action) => {
                 for (var repo of storedEntry.repo) {
                     //ignore if repo exists in state already - to be implemented
                     let newObj = {}
-                    for (var i = 0; i < action.payload.repoNames.length; i++) {
-                        if (repo.repoName === action.payload.repoNames[i]) {
+                    for (var j = 0; j < action.payload.repoNames.length; j++) {
+                        if (repo.repoName === action.payload.repoNames[j]) {
                             for (var obj of repo.objects) {
                                 newObj = {
                                     key: obj.key,
@@ -321,56 +321,6 @@ const createTestReducer = (state = initialState, action) => {
             }
             break;
         }
-
-        // case "DISABLE_INPUT": {
-        //     let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
-        //     let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId === action.payload.stepId)
-        //     let newStep = {
-        //         ...state.scenarios[scenarioIndex].steps[stepIndex],
-        //         disabled: true
-        //     }
-
-        //     let newScenario = {
-        //         scenarioId: state.scenarios[scenarioIndex].scenarioId,
-        //         description: state.scenarios[scenarioIndex].description,
-        //         steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
-        //             newStep,
-        //         ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
-        //     }
-
-        //     state = {
-        //         ...state,
-        //         scenarios: [...state.scenarios.slice(0, scenarioIndex),
-        //             newScenario,
-        //         ...state.scenarios.slice(scenarioIndex + 1)]
-        //     }
-        //     break;
-        // }
-
-        // case "ENABLE_INPUT": {
-        //     let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
-        //     let stepIndex = state.scenarios[scenarioIndex].steps.findIndex(scenario => scenario.stepId === action.payload.stepId)
-        //     let newStep = {
-        //         ...state.scenarios[scenarioIndex].steps[stepIndex],
-        //         disabled: false
-        //     }
-
-        //     let newScenario = {
-        //         scenarioId: state.scenarios[scenarioIndex].scenarioId,
-        //         description: state.scenarios[scenarioIndex].description,
-        //         steps: [...state.scenarios[scenarioIndex].steps.slice(0, (stepIndex)),
-        //             newStep,
-        //         ...state.scenarios[scenarioIndex].steps.slice(stepIndex + 1)]
-        //     }
-
-        //     state = {
-        //         ...state,
-        //         scenarios: [...state.scenarios.slice(0, scenarioIndex),
-        //             newScenario,
-        //         ...state.scenarios.slice(scenarioIndex + 1)]
-        //     }
-        //     break;
-        // }
 
         case "REMOVE_FEATURE": {
             state = {
