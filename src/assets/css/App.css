@@ -1,6 +1,9 @@
+body {
+    background-color: white;
+}
+
 .App-header {
     background-color: #2d2d2d;
-    ;
     padding: 20px;
     color: white;
     text-align: center;
@@ -55,8 +58,9 @@
     /* justify-content: center; */
 }
 
-#obj_container {
-    flex: auto;
+.object_container {
+    display: flex;
+    justify-content: center;
 }
 
 .flex-container {
@@ -69,9 +73,25 @@
 }
 
 .dropdown_customized {
-    max-width: 200px !important;
+    max-width: 220px !important;
+}
+
+.dropdown_customized .rw-widget-container {
+    display: inline !important;
+}
+
+.dropdown_customized .rw-widget-container {
     border: none !important;
+    border-bottom: 1px solid rgb(186, 187, 190) !important;
     background-color: transparent !important;
+    padding: 5px !important;
+    color: rgb(125, 125, 133) !important;
+    border-radius: 0px !important;
+    box-shadow: unset;
+}
+
+.flex-container-end {
+    align-self: flex-end;
 }
 
 #dropdown {
@@ -119,7 +139,7 @@
 
 .panel {
     max-width: 80%;
-    min-height: 300px;
+    min-height: 250px;
     margin: 20px;
 }
 
@@ -153,11 +173,6 @@
     margin-top: 15px;
     margin-bottom: 15px;
 }
-
-
-/* .padding:hover {
-    background: yellow;
-} */
 
 ul {
     list-style-type: none;
@@ -203,14 +218,6 @@ ul {
     cursor: pointer;
 }
 
-
-/* .icon-size {
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-} */
-
 ul.dropdown-menu>li {
     float: left;
     /* display: inline; */
@@ -230,7 +237,7 @@ ul.dropdown-menu {
 }
 
 .highlight-line:hover {
-    background: rgba(134, 134, 132, 0.11);
+    background: #dadadaec;
 }
 
 .highlight-line {
@@ -262,9 +269,20 @@ ul.dropdown-menu {
     float: right;
 }
 
+.Object__float--left {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.Object__flex--end {
+    align-self: flex-end;
+}
+
 .error {
     border: 1.5px solid rgba(255, 5, 5, 0.384);
-    /* background-color: #f0d3d3; */
 }
 
 .set-alert-width {
@@ -276,94 +294,6 @@ ul.dropdown-menu {
 .well__size {
     max-width: 70%;
 }
-
-
-/* .float_left {
-    float: left;
-    width: 28%;
-}
-
-.float_left span {
-    display: block;
-} */
-
-
-/* .mdi::before {
-    font-size: 20px;
-    line-height: 14px;
-}
-
-.btn .mdi::before {
-    position: relative;
-    top: 4px;
-}
-
-.btn-xs .mdi::before {
-    font-size: 18px;
-    top: 3px;
-}
-
-.btn-sm .mdi::before {
-    font-size: 18px;
-    top: 3px;
-}
-
-.dropdown-menu .mdi {
-    width: 18px;
-}
-
-.dropdown-menu .mdi::before {
-    position: relative;
-    top: 4px;
-    left: -8px;
-}
-
-.nav .mdi::before {
-    position: relative;
-    top: 4px;
-}
-
-.navbar .navbar-toggle .mdi::before {
-    position: relative;
-    top: 4px;
-    color: #FFF;
-}
-
-.breadcrumb .mdi::before {
-    position: relative;
-    top: 4px;
-}
-
-.breadcrumb a:hover {
-    text-decoration: none;
-}
-
-.breadcrumb a:hover span {
-    text-decoration: underline;
-}
-
-.alert .mdi::before {
-    position: relative;
-    top: 4px;
-    margin-right: 2px;
-}
-
-.input-group-addon .mdi::before {
-    position: relative;
-    top: 3px;
-}
-
-.navbar-brand .mdi::before {
-    position: relative;
-    top: 2px;
-    margin-right: 2px;
-}
-
-.list-group-item .mdi::before {
-    position: relative;
-    top: 3px;
-    left: -3px
-} */
 
 .mdi::before {
     font-size: 23px;
@@ -380,62 +310,3 @@ ul.dropdown-menu {
     cursor: pointer;
     color: rgb(4, 134, 134);
 }
-
-
-/* CSSTerm.com Simple Horizontal DropDown CSS menu */
-
-
-/* 
-.drop_menu {
-    background: #005555;
-    padding: 0px;
-    margin: 0;
-    list-style-type: none;
-    height: 30px;
-}
-
-.drop_menu li {
-    float: left;
-}
-
-.drop_menu li {
-    padding: 7px 7px;
-    display: block;
-    color: #fff;
-    text-decoration: none;
-    font: 12px arial, verdana, sans-serif;
-} */
-
-
-/* Submenu */
-
-
-/* .drop_menu ul {
-    position: absolute;
-    left: -9999px;
-    top: -9999px;
-    list-style-type: none;
-}
-
-.drop_menu li:hover {
-    position: absolute;
-    background: #5FD367;
-}
-
-.drop_menu li:hover ul {
-    left: -100%;
-    top: 0px;
-    background: #5FD367;
-    padding: 0px;
-    position: relative;
-}
-
-.drop_menu li:hover ul li {
-    padding: 9px 9px;
-    display: inline;
-    background-color: #5FD367;
-}
-
-.drop_menu li:hover ul li:hover {
-    background: #005555;
-} */
