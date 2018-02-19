@@ -75,6 +75,7 @@ class EditTest extends React.Component {
                                 onChange={this.props.save.bind(this, scenarioIndex, stepIndex, placeholder)}
                                 groupBy='name'
                                 filter='contains'
+                                defaultValue={this.props.create.scenarios[scenarioIndex].steps[stepIndex][placeholder]}
                             />
                         </div>
 
@@ -150,7 +151,7 @@ class EditTest extends React.Component {
                                                 <MenuItem eventKey="4" onClick={this.props.stepDown.bind(this, item.scenarioId, step.stepId)}><span className="allIcons mdi mdi-arrow-down-drop-circle-outline" /></MenuItem>
                                             </DropdownButton>
                                         </div>
-                                        <div class="clear" />
+                                        <div className="clear" />
                                     </li>);
                             })
                         }
