@@ -68,7 +68,7 @@ class EditTest extends React.Component {
                     newArr.push(
                         <div className='dropdown_customized '>
                             <DropdownList
-                                data={this.props.create.repos}
+                                data={this.props.create.repoObjects}
                                 textField='key'
                                 placeholder={placeholder}
                                 className='dropdown_customized'

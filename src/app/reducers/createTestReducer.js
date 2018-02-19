@@ -328,7 +328,8 @@ const createTestReducer = (state = initialState, action) => {
             state = {
                 feature: '',
                 scenarios: [],
-                repos: [],
+                repoNames: [],
+                repoObjects: [],
                 activeIndex: '',
                 selectedOption: ''
             }
