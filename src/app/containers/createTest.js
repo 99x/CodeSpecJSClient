@@ -25,7 +25,7 @@ class CreateTest extends Component {
                 }
             }
             let testsArr = []
-            if ('test' in stored) { //alreasy test suites exist
+            if ('test' in stored) { //already test suites exist
                 testsArr = stored.test
                 let testIndex = stored.test.findIndex(test => test.feature === this.props.create.feature)
                 if (testIndex !== (-1)) { //this test suite exits already and now being modified
@@ -62,6 +62,7 @@ class CreateTest extends Component {
                     }
                 }
             }
+
             return repoNames;
         } catch (error) {
             console.log('Unable to retrieve repo names: ' + error.message)
@@ -87,7 +88,7 @@ class CreateTest extends Component {
                                 filter='contains'
                                 textField='name'
                                 onChange={this.props.addRepo.bind(this, this.props.login.username)}
-                                defaultValue={this.props.create.repos}
+                                defaultValue={this.props.create.repoNames}
                             />
                         </div>
 

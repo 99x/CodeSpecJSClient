@@ -3,7 +3,8 @@ import ShortUniqueId from 'short-unique-id';
 const initialState = {
     feature: '',
     scenarios: [],
-    repos: [],
+    repoNames: [],
+    repoObjects: [],
     activeIndex: '',
     selectedOption: ''
 }
@@ -146,7 +147,8 @@ const createTestReducer = (state = initialState, action) => {
 
                 state = {
                     ...state,
-                    repos: newRepos
+                    repoObjects: newRepos,
+                    repoNames: action.payload.repoNames
                 }
             } catch (error) {
                 console.log('ERROR: ADD_REPO failed: ' + error.message)
@@ -334,6 +336,8 @@ const createTestReducer = (state = initialState, action) => {
         }
 
         case "INITIALIZE_FORM": {
+            console.log('initializing form')
+            console.log(action.payload)
             state = action.payload;
             break;
         }
