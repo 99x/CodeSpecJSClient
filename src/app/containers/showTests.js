@@ -1,18 +1,49 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Panel } from 'react-bootstrap';
+import { Button, Panel } from 'react-bootstrap';
 import { createTest } from '../actions/navigationActions';
 import { initializeForm } from '../actions/createTestActions';
 import '../../assets/css/App.css';
 
 class ShowTest extends Component {
-    componentDidMount() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            runningStates: []
+        }
+        this.startRunningTest = this.startRunningTest.bind(this);
+    }
 
+    startRunningTest = (index) => {
+        let newObj = {
+            isRunning: true,
+            testCompleted: false
+        }
+        this.updateState(newObj, index);
+
+        setTimeout(() => {
+            let newObj = {
+                isRunning: false,
+                testCompleted: true
+            }
+            this.updateState(newObj, index)
+        }, 2000);
+
+    }
+
+    updateState = (newObj, index) => {
+        let stateArr = [...this.state.runningStates.slice(0, index),
+            newObj,
+        ...this.state.runningStates.slice(index + 1)]
+
+        this.setState({
+            runningStates: stateArr
+        })
     }
 
     editThisTest = (test) => {
         this.props.initializeForm(test);
-        this.props.createTest();
+        this.props.createTest(); //navigate to create test page
     }
 
     deleteThisTest = (feature, e) => {
@@ -39,9 +70,27 @@ class ShowTest extends Component {
         if (username in localStorage) {
             if ('test' in cachedEntry) { //there are existing tests
                 test = cachedEntry.test.map((test, index) => {
+                    this.state.runningStates.push({ isRunning: false, testCompleted: false })
                     return (
                         <li className='highlight-line test__align--left displayTest__padding' key={test.feature} >
                             <span className="allIcons mdi mdi-delete-forever test__align--right" onClick={this.deleteThisTest.bind(this, test.feature)} />
+                            <Button bsSize="xsmall" className="test__align--right" bsStyle="success" onClick={this.startRunningTest.bind(this, index)}>Run</Button>
+                            {
+                                this.state.runningStates[index].isRunning ?
+                                    <div>
+                                        <span className="allIcons mdi mdi-checkbox-blank-circle test__align--right blink" />
+                                        <span className="allIcons mdi mdi-checkbox-blank-circle test__align--right blink" />
+                                        <div className="divider" />
+                                    </div>
+                                    :
+                                    this.state.runningStates[index].testCompleted ?
+                                        <div className="test__align--right">
+                                            <a>3 Passed, 2 Failed</a>
+                                            <div className="divider" />
+                                        </div>
+                                        :
+                                        <div></div>
+                            }
                             <div onClick={this.editThisTest.bind(this, test)}>
                                 <span className="blueTag"> Test Suite: </span>{test.feature}
                                 <ul>
@@ -79,8 +128,6 @@ class ShowTest extends Component {
                 </React.Fragment>
             )
         }
-
-
         return test;
     }
 
@@ -92,7 +139,6 @@ class ShowTest extends Component {
                         <ul>
                             {this.existingTests(this)}
                         </ul>
-                        {/* <p>You do not have any Test Suites currently</p> */}
                     </div>
                 </Panel>
             </div>

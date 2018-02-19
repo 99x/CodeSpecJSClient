@@ -310,3 +310,14 @@ ul.dropdown-menu {
     cursor: pointer;
     color: rgb(4, 134, 134);
 }
+
+.blink {
+    animation: blinker 1s linear infinite;
+    color: #3e3e41;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
