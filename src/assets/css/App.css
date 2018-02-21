@@ -137,7 +137,7 @@ body {
     position: relative;
 }
 
-.panel {
+.customized_panel .panel {
     max-width: 80%;
     min-height: 250px;
     margin: 20px;

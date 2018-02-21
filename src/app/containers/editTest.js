@@ -163,34 +163,36 @@ class EditTest extends React.Component {
         });
 
         return (
-            <Panel className="align-center" header=".feature">
-                <If condition={this.props.create.feature !== ''}>
-                    <div className="code-font">
-                        <div className="highlight-line">
-                            <span className="orangeTag "> Test Suite: </span>
-                            <div className="align-inline">
-                                <input readOnly type="text" placeholder='placeholder' className='description__edit' id='feature'
-                                    value={this.props.create.feature}
-                                    onChange={this.props.addFeature.bind(this)}
-                                    onBlur={this.disableEditDescription.bind(this, "feature")}
-                                />
+            <div className="customized_panel align-center">
+                <Panel header=".feature">
+                    <If condition={this.props.create.feature !== ''}>
+                        <div className="code-font">
+                            <div className="highlight-line">
+                                <span className="orangeTag "> Test Suite: </span>
+                                <div className="align-inline">
+                                    <input readOnly type="text" placeholder='placeholder' className='description__edit' id='feature'
+                                        value={this.props.create.feature}
+                                        onChange={this.props.addFeature.bind(this)}
+                                        onBlur={this.disableEditDescription.bind(this, "feature")}
+                                    />
+                                </div>
+
+                                <div className="Object__float--right">
+                                    <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
+                                        noCaret id="dropdown-no-caret">
+                                        <MenuItem eventKey="1" onClick={this.editDescription.bind(this, "feature")}><span className="allIcons mdi mdi-pencil" /></MenuItem>
+                                        <MenuItem eventKey="2" onClick={this.confirmDelete.bind(this, "feature")}><span className="allIcons mdi mdi-delete" /></MenuItem>
+                                    </DropdownButton>
+                                </div>
                             </div>
 
-                            <div className="Object__float--right">
-                                <DropdownButton bsStyle="default" className="more-options" title={<span className="allIcons mdi mdi-dots-vertical" />}
-                                    noCaret id="dropdown-no-caret">
-                                    <MenuItem eventKey="1" onClick={this.editDescription.bind(this, "feature")}><span className="allIcons mdi mdi-pencil" /></MenuItem>
-                                    <MenuItem eventKey="2" onClick={this.confirmDelete.bind(this, "feature")}><span className="allIcons mdi mdi-delete" /></MenuItem>
-                                </DropdownButton>
-                            </div>
+                            <ul>
+                                {scenarios}
+                            </ul>
                         </div>
-
-                        <ul>
-                            {scenarios}
-                        </ul>
-                    </div>
-                </If>
-            </Panel>
+                    </If>
+                </Panel>
+            </div>
         );
     }
 }

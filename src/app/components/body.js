@@ -4,6 +4,7 @@ import CreateTest from '../containers/createTest';
 import CreateObject from './../containers/createObject';
 import EditTest from './../containers/editTest';
 import ShowTest from './../containers/showTests';
+import Dashboard from './dashboard';
 
 class Body extends Component {
     render() {
@@ -29,7 +30,7 @@ class Body extends Component {
         } else if (this.props.showDashboard) {
             content = (
                 <div>
-                    <p>page coming soon</p>
+                    <Dashboard />
                 </div>
             );
         }

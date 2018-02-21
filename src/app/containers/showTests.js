@@ -85,7 +85,7 @@ class ShowTest extends Component {
                                     :
                                     this.state.runningStates[index].testCompleted ?
                                         <div className="test__align--right">
-                                            <a>3 Passed, 2 Failed</a>
+                                            <a target="_blank" href="#">3 Passed, 2 Failed</a>
                                             <div className="divider" />
                                         </div>
                                         :
@@ -133,8 +133,9 @@ class ShowTest extends Component {
 
     render() {
         return (
-            <div className="col-sm-10 col-sm-offset-2 Mainbutton">
-                <Panel>
+
+            <div className="col-sm-10 col-sm-offset-2 Mainbutton customized_panel">
+                <Panel className="panel-size">
                     <div id="myPanel">
                         <ul>
                             {this.existingTests(this)}
