@@ -83,14 +83,14 @@ class CreateObject extends React.Component {
                                 name={`${object}.key`}
                                 type='text'
                                 component={this.renderField}
-                                validate={required}
+                                // validate={required}
                                 label="Key"
                                 id={`${object}.key`}
                             />
                             <div className="divider" />
                             <Field
                                 name={`${object}.method`}
-                                type='text'
+                                type='dropdown'
                                 component={this.renderDropDown}
                                 label="Method"
                                 id={`${object}.key${object}.method`}
@@ -102,7 +102,7 @@ class CreateObject extends React.Component {
                                 type='text'
                                 component={this.renderField}
                                 label="Value"
-                                validate={required}
+                                // validate={required}
                                 id={`${object}.key${object}.value`}
                             />
 
@@ -126,6 +126,14 @@ class CreateObject extends React.Component {
         let username = this.props.login.username
         let storedEntry = JSON.parse(localStorage.getItem(username))
         let newObject = {};
+
+        // remove empty objects
+        let newArr = data.objects.filter(value => Object.keys(value).length !== 0)
+
+        //replace objects array only if its updated
+        if (newArr.length !== data.objects.length) {
+            data.objects = newArr
+        }
 
         if (username in localStorage) { //useralready has some data
             if ('test' in storedEntry) { //append tests to newobj
