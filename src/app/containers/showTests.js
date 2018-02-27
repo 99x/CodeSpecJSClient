@@ -68,7 +68,7 @@ class ShowTest extends Component {
         let test = "";
 
         if (username in localStorage) {
-            if ('test' in cachedEntry) { //there are existing tests
+            if ('test' in cachedEntry && cachedEntry.test.length !== 0) { //there are existing tests
                 test = cachedEntry.test.map((test, index) => {
                     this.state.runningStates.push({ isRunning: false, testCompleted: false })
                     return (

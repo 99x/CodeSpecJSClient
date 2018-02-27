@@ -17,11 +17,11 @@ class Body extends Component {
             );
         } else if (this.props.showCreate) {
             content = (
-                <div>
+                <React.Fragment>
                     <CreateTest />
                     <br />
                     <EditTest />
-                </div>
+                </React.Fragment>
             );
         } else if (this.props.showRepo) {
             content = (
