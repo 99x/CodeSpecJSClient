@@ -23,12 +23,12 @@ export function editScenario(scenarioId, value) {
 }
 
 
-export function addOption(option) {
-    return {
-        type: "ADD_OPTION",
-        payload: option
-    };
-}
+// export function addOption(option) {
+//     return {
+//         type: "ADD_OPTION",
+//         payload: option
+//     };
+// }
 
 export function addRepo(repoNames, username) {
     return {
@@ -40,12 +40,13 @@ export function addRepo(repoNames, username) {
     };
 }
 
-export function addStep(type) {
+export function addStep(type, steps, scenarioId) {
     return {
         type: "ADD_STEP",
         payload: {
-            scenarioId: "1",
-            stepOne: type
+            stepOne: type,
+            stepTwo: steps,
+            scenarioId: scenarioId
         }
     };
 }
@@ -146,3 +147,22 @@ export function initializeForm(cachedEntry) {
         payload: cachedEntry
     }
 }
+
+export function handleDelete(id) {
+    return {
+        type: "HANDLE_DELETE",
+        payload: {
+            id: id
+        }
+    }
+}
+export function toggleDelete(id, newValue) {
+    return {
+        type: "TOGGLE_DELETE",
+        payload: {
+            value: newValue,
+            id: id
+        }
+    }
+}
+

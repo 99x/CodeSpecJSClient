@@ -6,7 +6,7 @@ const initialState = {
     repoNames: [],
     repoObjects: [],
     activeIndex: '',
-    selectedOption: ''
+    deleteConfirmation: []
 }
 
 // const initialState = {
@@ -33,7 +33,8 @@ const createTestReducer = (state = initialState, action) => {
         case "ADD_FEATURE":
             state = {
                 ...state,
-                feature: action.payload
+                feature: action.payload,
+                deleteConfirmation: [...state.deleteConfirmation, { id: 'feature', delete: true, open: false }]
             }
             break;
 
@@ -53,8 +54,8 @@ const createTestReducer = (state = initialState, action) => {
 
                 state = {
                     ...state,
-                    activeIndex: state.scenarios.length,
-                    scenarios: [...state.scenarios, newScenario]
+                    scenarios: [...state.scenarios, newScenario],
+                    deleteConfirmation: [...state.deleteConfirmation, { id: scenarioId, delete: true, open: false }]
                 }
             }
             break;
@@ -66,19 +67,19 @@ const createTestReducer = (state = initialState, action) => {
             if (arrayIndex === 0) {
                 console.log("ERROR MESSAGE : NEED TO ADD Scenario FIRST")
                 //SEND ERROR MESSAGE : NEED TO ADD Scenario FIRST
-            } else if (state.selectedOption === "") {
-                console.log("ERROR MESSAGE : Step cannot be empty")
 
             } else {
                 let newStepId = uid.randomUUID(6);
                 var newStep = {
                     stepId: newStepId,
                     stepOne: action.payload.stepOne,
-                    stepTwo: state.selectedOption.label,
+                    stepTwo: action.payload.stepTwo,
                     disabled: false
                 }
 
-                let strArr = state.selectedOption.label.split(" ");
+                let strArr = action.payload.stepTwo.split(" ");
+
+                // Add an empty object key in the name of the element
                 for (var i = 0, tot = strArr.length; i < tot; i++) {
                     if (strArr[i].includes("<")) {
                         let key = strArr[i].substring(1, (strArr[i].length - 1));
@@ -86,43 +87,38 @@ const createTestReducer = (state = initialState, action) => {
                     }
                 }
 
-                let newScenario = {};
+                let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
+                let newScenario = {
+                    scenarioId: state.scenarios[scenarioIndex].scenarioId,
+                    description: state.scenarios[scenarioIndex].description,
+                };
 
-                if (typeof state.scenarios[state.activeIndex].steps === "undefined") {
-
-                    newScenario = {
-                        scenarioId: state.scenarios[state.activeIndex].scenarioId,
-                        description: state.scenarios[state.activeIndex].description,
-                        steps: [newStep]
-                    }
+                if (typeof state.scenarios[scenarioIndex].steps === "undefined") {
+                    newScenario["steps"] = [newStep]
                 } else {
-
-                    newScenario = {
-                        scenarioId: state.scenarios[state.activeIndex].scenarioId,
-                        description: state.scenarios[state.activeIndex].description,
-                        steps: [...state.scenarios[state.activeIndex].steps, newStep]
-                    }
+                    newScenario["steps"] = [...state.scenarios[scenarioIndex].steps, newStep]
                 }
 
                 state = {
                     ...state,
-                    scenarios: [...state.scenarios.slice(0, state.activeIndex),
+                    scenarios: [...state.scenarios.slice(0, scenarioIndex),
                         newScenario,
-                    ...state.scenarios.slice(state.activeIndex + 1)]
+                    ...state.scenarios.slice(scenarioIndex + 1)],
+                    deleteConfirmation: [...state.deleteConfirmation, { id: newStepId, delete: true, open: false }]
                 }
             }
 
             break;
         }
 
-        case "ADD_OPTION": {
-            const value = action.payload === null ? '' : action.payload
-            state = {
-                ...state,
-                selectedOption: value
-            }
-            break;
-        }
+        // case "ADD_OPTION": {
+        //     const value = action.payload === null ? '' : action.payload
+        //     state = {
+        //         ...state,
+        //         selectedOption: value
+        //     }
+        //     break;
+        // }
 
         case "ADD_REPO": {
             try {
@@ -159,11 +155,13 @@ const createTestReducer = (state = initialState, action) => {
 
         case "REMOVE_SCENARIO": {
             let deleteScenarioId = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload)
-
+            let deleteConfirmationId = state.deleteConfirmation.findIndex(item => item.id === action.payload)
             state = {
                 ...state,
                 scenarios: [...state.scenarios.slice(0, deleteScenarioId),
-                ...state.scenarios.slice(deleteScenarioId + 1)]
+                ...state.scenarios.slice(deleteScenarioId + 1)],
+                deleteConfirmation: [...state.deleteConfirmation.slice(0, deleteConfirmationId),
+                ...state.deleteConfirmation.slice(deleteConfirmationId + 1)]
             }
             break;
         }
@@ -171,8 +169,9 @@ const createTestReducer = (state = initialState, action) => {
         case "REMOVE_STEP": {
             let scenarioIndex = state.scenarios.findIndex(scenario => scenario.scenarioId === action.payload.scenarioId)
             let deleteStepIndex = state.scenarios[scenarioIndex].steps.findIndex(step => step.stepId === action.payload.removeStepId)
-
+            let deleteConfirmationId = state.deleteConfirmation.findIndex(item => item.id === action.payload.removeStepId)
             let newScenario = {
+                ...state.scenarios[scenarioIndex],
                 scenarioId: state.scenarios[scenarioIndex].scenarioId,
                 description: state.scenarios[scenarioIndex].description,
                 steps: [...state.scenarios[scenarioIndex].steps.slice(0, deleteStepIndex),
@@ -183,7 +182,9 @@ const createTestReducer = (state = initialState, action) => {
                 ...state,
                 scenarios: [...state.scenarios.slice(0, scenarioIndex),
                     newScenario,
-                ...state.scenarios.slice(scenarioIndex + 1)]
+                ...state.scenarios.slice(scenarioIndex + 1)],
+                deleteConfirmation: [...state.deleteConfirmation.slice(0, deleteConfirmationId),
+                ...state.deleteConfirmation.slice(deleteConfirmationId + 1)]
             }
             break;
         }
@@ -330,8 +331,7 @@ const createTestReducer = (state = initialState, action) => {
                 scenarios: [],
                 repoNames: [],
                 repoObjects: [],
-                activeIndex: '',
-                selectedOption: ''
+                deleteConfirmation: []
             }
             break;
         }
@@ -341,6 +341,49 @@ const createTestReducer = (state = initialState, action) => {
             console.log(action.payload)
             state = action.payload;
             break;
+        }
+
+        case "HANDLE_DELETE": {
+            let index = state.deleteConfirmation.findIndex(obj => obj.id === action.payload.id)
+            if (index !== -1) {
+                let currentDeleteState = !(state.deleteConfirmation[index].delete)
+
+                let newObj = {
+                    ...state.deleteConfirmation[index],
+                    delete: currentDeleteState,
+                }
+
+                state = {
+                    ...state,
+                    deleteConfirmation: [...state.deleteConfirmation.slice(0, index),
+                        newObj,
+                    ...state.deleteConfirmation.slice(index + 1)
+                    ]
+                }
+            }
+
+        }
+
+        case "TOGGLE_DELETE": {
+            let index = state.deleteConfirmation.findIndex(obj => obj.id === action.payload.id)
+            if (index !== -1) {
+                let currentOpenState = !(state.deleteConfirmation[index].open)
+
+                let newObj = {
+                    id: action.payload.id,
+                    delete: state.deleteConfirmation[index].delete,
+                    open: currentOpenState
+                }
+
+                state = {
+                    ...state,
+                    deleteConfirmation: [...state.deleteConfirmation.slice(0, index),
+                        newObj,
+                    ...state.deleteConfirmation.slice(index + 1)
+                    ]
+                }
+            }
+
         }
 
     }
