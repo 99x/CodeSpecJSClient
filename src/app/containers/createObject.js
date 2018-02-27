@@ -15,6 +15,12 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 const required = value => (value ? "" : "required")
 
 class CreateObject extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isButtonTop: true
+        }
+    }
 
     renderField = ({ input, label, type, id, meta: { touched, error }, ...props }) => {
         return (
@@ -50,6 +56,18 @@ class CreateObject extends React.Component {
         )
     }
 
+    moveButtonBelow = () => {
+        if (this.state.isButtonTop !== false) { //to avoid re-rendering component
+            this.setState({ isButtonTop: false });
+        }
+    }
+
+    moveButtonAbove = (index) => {
+        if (index === 0 || index === undefined) {
+            this.setState({ isButtonTop: true });
+        }
+    }
+
     renderObjects = ({ fields, meta: { touched, error, submitFailed } }) => {
         return (
             <ul>
@@ -65,7 +83,9 @@ class CreateObject extends React.Component {
                             id='repoName'
                         />
                         <div className="divider" />
-                        <Button bsStyle="primary" onClick={() => fields.push({})}>Add New Object</Button>
+                        {
+                            this.state.isButtonTop ? <Button bsStyle="primary" onClick={() => { fields.push({}); this.moveButtonBelow(); }}>Add New Object</Button> : null
+                        }
                         <If condition={error !== undefined} >
                             <Alert bsStyle="warning" className="set-alert-width">
                                 <strong>Error: </strong> {error}
@@ -108,15 +128,18 @@ class CreateObject extends React.Component {
 
                             <div className="divider" />
                             <span
-                                onClick={() => fields.remove(index)}
+                                onClick={() => { fields.remove(index); this.moveButtonAbove(index) }}
                                 className="allIcons mdi mdi-delete-forever align-inline"
                             />
                         </div>
 
                     </li>
                 )
-
                 )}
+                <br />
+                {
+                    this.state.isButtonTop ? null : <center> <Button bsStyle="primary" className="align_inline" onClick={() => fields.push({})}>Add New Object</Button></center>
+                }
 
             </ul>
         );
@@ -268,15 +291,15 @@ class CreateObject extends React.Component {
                     />
                     <div className="divider" />
                     <Button bsStyle="primary" onClick={this.editThisRepo.bind(this)}>Edit Repo</Button>
-                    <Button id="setmargin__left" bsStyle="success" onClick={this.initializeForm.bind(this)}>Create New Repo</Button>
+                    <Button id="setmargin__left" bsStyle="success" onClick={() => { this.initializeForm(); this.moveButtonAbove() }}>Create New Repo</Button>
                 </div>
 
                 <br />
                 <form onSubmit={handleSubmit(this.submit.bind(this))}>
                     <Well>
                         <FieldArray name='objects' component={this.renderObjects} />
-                        <center>
-                            <Button bsStyle="default" disabled={submitting || invalid} onClick={this.confirmDelete.bind(this)}>Delete Repo</Button>
+                        <center className="padding_top">
+                            <Button bsStyle="default" disabled={submitting || invalid} onClick={() => { this.confirmDelete(); this.moveButtonAbove() }}>Delete Repo</Button>
                             <div className="divider" />
                             <Button bsStyle="default" type="submit" disabled={pristine || submitting || invalid}>Submit</Button>
                         </center>
