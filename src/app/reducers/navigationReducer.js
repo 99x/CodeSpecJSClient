@@ -1,6 +1,6 @@
 const initialState = {
-    dashboard: false,
-    create: true,
+    dashboard: true,
+    create: false,
     view: false,
     repo: false
 }

@@ -72,6 +72,10 @@ body {
     max-width: 100px;
 }
 
+.dropdown-width {
+    max-width: 20% !important;
+}
+
 .dropdown_customized {
     max-width: 220px !important;
 }
@@ -106,7 +110,7 @@ body {
     min-width: 200px !important;
 }
 
-#object__dropdown--width {
+.object__dropdown--width {
     min-width: 300px;
 }
 

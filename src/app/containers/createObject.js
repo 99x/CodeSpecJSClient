@@ -8,6 +8,7 @@ import validateObjects from './validateObjects';
 
 import { If } from 'react-if';
 import Select from 'react-select';
+import { DropdownList } from 'react-widgets';
 import 'react-select/dist/react-select.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -34,23 +35,15 @@ class CreateObject extends React.Component {
 
 
     renderDropDown = ({ input, label, type, id, meta: { touched, error }, ...props }) => {
-        const handleBlur = e => e.preventDefault();
-        const options = [
-            { value: 'id', label: 'Id' },
-            { value: 'css', label: 'Css' },
-            { value: 'xpath', label: 'Xpath' },
-            { value: 'model', label: 'Model' },
-            { value: 'binding', label: 'Binding' }
-        ]
         return (
             <React.Fragment>
-                <Select {...input}
-                    id="dropdown-width"
-                    value={input.value.value ? input.value.value : "id"}
-                    options={options}
+                <DropdownList
+                    {...input}
+                    className='dropdown-width'
+                    data={['Id', 'Css', 'Xpath', 'Model', 'Binding']}
+                    placeholder='Method'
                     onChange={input.onChange}
-                    onBlur={handleBlur}
-                    autosize={false}
+                    filter='contains'
                 />
             </React.Fragment>
         )
@@ -252,11 +245,7 @@ class CreateObject extends React.Component {
                 const cachedObjects = JSON.parse(localStorage.getItem(username))
                 if ('repo' in cachedObjects) {
                     for (var repo of cachedObjects.repo) {
-                        let option = {
-                            value: repo.repoName,
-                            label: repo.repoName
-                        }
-                        allRepos.push(option)
+                        allRepos.push(repo.repoName)
                     }
                 }
             }
@@ -264,11 +253,13 @@ class CreateObject extends React.Component {
 
             return (
                 <React.Fragment>
-                    <Select {...input}
-                        id="object__dropdown--width"
-                        options={allRepos}
+                    <DropdownList
+                        {...input}
+                        className='object__dropdown--width'
+                        data={allRepos}
+                        placeholder='Repository'
                         onChange={input.onChange}
-                        onBlur={handleBlur}
+                        filter='contains'
                     />
                 </React.Fragment>
             )
